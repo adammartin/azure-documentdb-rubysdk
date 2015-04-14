@@ -12,7 +12,7 @@ describe Azure::MasterToken do
   let(:encoded_signature) { "ENCODED MESSAGE" }
   let(:uri_encoded_auth) { "ENCODED%20MESSAGE" }
   let(:master_auth_token) { "type=master&ver=1.0&sig=#{uri_encoded_auth}" }
-  let(:master_token) { Azure::MasterToken.new verb, resource_type, resource_id, master_key }
+  let(:master_token) { Azure::MasterToken.new master_key }
 
   before(:each) {
     give(Azure::HMACEncoder).new { encoder }
@@ -20,6 +20,6 @@ describe Azure::MasterToken do
   }
 
   it "Generates the encoded string" do
-    expect(master_token.generate date).to eq master_auth_token
+    expect(master_token.generate verb, resource_type, resource_id, date).to eq master_auth_token
   end
 end
