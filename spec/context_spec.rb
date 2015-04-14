@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'documentdb_context'
+require 'context'
 
 describe Azure::DocumentDB::Context do
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
