@@ -18,4 +18,8 @@ describe Azure::DocumentDB::Context do
   it "has the master token" do
     expect(context.master_token).to eq master_token
   end
+
+  it "has the service version" do
+    expect(context.service_version).to eq "2014-08-21"
+  end
 end
