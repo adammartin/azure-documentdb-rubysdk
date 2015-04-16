@@ -1,4 +1,4 @@
-require 'uri'
+require 'erb'
 require_relative 'hmac_encoder'
 
 module Azure
@@ -13,7 +13,7 @@ module Azure
         token_version = "1.0"
         text = "#{verb}\n#{resource_type}\n#{resource_id}\n#{rfc7321_date}\n\n"
         signature = Azure::DocumentDB::HMACEncoder.new.encode master_key, text
-        URI.escape "type=#{type}&ver=#{token_version}&sig=#{signature}"
+        ERB::Util.url_encode "type=#{type}&ver=#{token_version}&sig=#{signature}"
       end
 
       private

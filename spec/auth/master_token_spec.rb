@@ -11,7 +11,7 @@ describe Azure::DocumentDB::MasterToken do
   let(:unencoded_signature) { "#{verb}\n#{resource_type}\n#{resource_id}\n#{date}\n\n" }
   let(:encoded_signature) { "ENCODED MESSAGE" }
   let(:uri_encoded_auth) { "ENCODED%20MESSAGE" }
-  let(:master_auth_token) { "type=master&ver=1.0&sig=#{uri_encoded_auth}" }
+  let(:master_auth_token) { "type%3Dmaster%26ver%3D1.0%26sig%3D#{uri_encoded_auth}" }
   let(:master_token) { Azure::DocumentDB::MasterToken.new master_key }
 
   before(:each) {
