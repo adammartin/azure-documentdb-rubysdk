@@ -14,7 +14,7 @@ describe Azure::DocumentDB::Database do
   let(:resource_type) { "dbs" }
   let(:database_name) { "new_database" }
   let(:accept) { "accept" }
-  let(:content_type) { "content-type" }
+  let(:content_type) { "Content-Type" }
   let(:client) { "rubysdk/0.0.1" }
 
   let(:list_header) { headers accept }
@@ -23,7 +23,7 @@ describe Azure::DocumentDB::Database do
 
   let(:create_header) {
     headers = headers content_type
-    headers["user-agent"] = client
+    headers["User-Agent"] = client
     headers
   }
   let(:create_body) { { "id" => database_name } }

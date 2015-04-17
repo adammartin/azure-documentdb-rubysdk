@@ -2,6 +2,7 @@ require 'json'
 require 'time'
 require 'uri'
 require_relative '../auth/master_token'
+require_relative '../header/header'
 
 module Azure
   module DocumentDB
@@ -13,14 +14,15 @@ module Azure
       end
 
       def list
-        header = header Time.now.httpdate, "accept"
+        service_header = header Time.now.httpdate, "accept"
+        header = Azure::DocumentDB::Header.new.generate ["x-ms-version"], service_header
         JSON.parse(rest_client.get url, header)
       end
 
       def create database_name
         body = { "id" => database_name }
-        header = header Time.now.httpdate, "content-type"
-        header["user-agent"] = "rubysdk/0.0.1"
+        service_header = header Time.now.httpdate, "Content-Type"
+        header = Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], service_header
         JSON.parse(rest_client.post url, body.to_json, header)
       end
 
@@ -29,7 +31,7 @@ module Azure
 
       def header time, content
         signed_auth = context.master_token.generate "get", resource_type, "", time
-        { content => "application/json", "x-ms-version" => context.service_version, "x-ms-date" => time, "authorization" => signed_auth }
+        { content => "application/json", "x-ms-date" => time, "authorization" => signed_auth }
       end
 
       def url
