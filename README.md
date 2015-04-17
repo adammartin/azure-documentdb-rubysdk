@@ -5,7 +5,7 @@ Lacking an official ruby SDK I'm going to start building one from my use case pe
 # Example usage
 
 ```
-> require 'restclient'
+> require 'documentdb'
 >
 > url_endpoint = ... # your url address
 > master_key = ... # your master_key
