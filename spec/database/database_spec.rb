@@ -16,9 +16,10 @@ describe Azure::DocumentDB::Database do
   let(:accept) { "accept" }
   let(:content_type) { "Content-Type" }
   let(:client) { "rubysdk/0.0.1" }
+  let(:database_id) { "0EWFAA==" }
 
   let(:list_header) { headers accept }
-  let(:database1) { {"id" => database_name, "_rid" => "0EwFAA==" , "_ts" => 1408176196, "_self" => "dbs\/0EwFAA==\/", "_etag" => "00001c00-0000-0000-0000-53ef10440000", "_colls" => "colls\/", "_users" => "users\/"} }
+  let(:database1) { {"id" => database_name, "_rid" => database_id, "_ts" => 1408176196, "_self" => "dbs\/0EwFAA==\/", "_etag" => "00001c00-0000-0000-0000-53ef10440000", "_colls" => "colls\/", "_users" => "users\/"} }
   let(:list_result) { {"_rid"=>"", "Databases" => [database1], "_count" => 1 } }
 
   let(:create_header) {
@@ -27,7 +28,7 @@ describe Azure::DocumentDB::Database do
     headers
   }
   let(:create_body) { { "id" => database_name } }
-  let(:create_response) { { "id" => "database_name", "_rid" => "K7J6AA==", "_ts" => 1408176280, "_self" => "dbs\/K7J6AA==\/", "_etag" => "00001d00-0000-0000-0000-53ef10980000", "_colls" => "colls\/", "_users" => "users\/" } }
+  let(:create_response) { { "id" => database_name, "_rid" => database_id, "_ts" => 1408176280, "_self" => "dbs\/K7J6AA==\/", "_etag" => "00001d00-0000-0000-0000-53ef10980000", "_colls" => "colls\/", "_users" => "users\/" } }
 
   let(:database) { Azure::DocumentDB::Database.new context, rest_client }
 
