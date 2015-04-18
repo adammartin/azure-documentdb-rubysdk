@@ -1,6 +1,6 @@
 # Azure DocumentDB Ruby SDK
 
-Lacking an official ruby SDK I'm going to start building one from my use case perspective.  Please help contribute and grow this project.  This project is completely in ALPHA state.
+Lacking an official ruby SDK I'm going to start building one from my use case perspective.  Please help contribute and grow this project.  This project is in ALPHA state.
 
 # Example usage
 
@@ -17,10 +17,8 @@ Lacking an official ruby SDK I'm going to start building one from my use case pe
 => {"_rid"=>"", "Databases"=>[], "_count"=>0}
 >
 > database.create "NewDatabase"
+=> {"id"=>"DatabaseExample", "_rid"=>"fn4ZAA==", "_ts"=>1429304742, "_self"=>"dbs/fn4ZAA==/", "_etag"=>""00000100-0000-0000-0000-553175a60000"", "_colls"=>"colls/", "_users"=>"users/"}
 ```
-
-NOTE: Still working on the create method.  It currently appears that there are more header elements required then what the documentation states.
-
 
 # Development
 
