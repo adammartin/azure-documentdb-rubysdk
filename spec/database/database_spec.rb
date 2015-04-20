@@ -13,32 +13,40 @@ describe Azure::DocumentDB::Database do
   let(:signed_auth) { "signed_auth" }
   let(:signed_auth_with_id) { "signed_auth_with_id" }
   let(:serv_version) { "2014-08-21" }
-  let(:database_name) { "new_database" }
   let(:accept) { "accept" }
   let(:content_type) { "Content-Type" }
   let(:client) { "rubysdk/0.0.1" }
+  let(:database_name) { "new_database" }
   let(:database_id) { "0EWFAA==" }
+  let(:database1) { {"id" => database_name, "_rid" => database_id, "_ts" => 1408176196, "_self" => "dbs\/0EwFAA==\/", "_etag" => "00001c00-0000-0000-0000-53ef10440000", "_colls" => "colls\/", "_users" => "users\/"} }
+  let(:default_header) {
+    {"User-Agent" => client, "x-ms-date" => http_date, "x-ms-version" => serv_version, "authorization" => signed_auth }.freeze
+  }
+  let(:default_header_with_signed_id) {
+    header = default_header.dup
+    header["authorization"] = signed_auth_with_id
+    header.freeze
+  }
 
   let(:list_header) { headers accept }
-  let(:database1) { {"id" => database_name, "_rid" => database_id, "_ts" => 1408176196, "_self" => "dbs\/0EwFAA==\/", "_etag" => "00001c00-0000-0000-0000-53ef10440000", "_colls" => "colls\/", "_users" => "users\/"} }
   let(:list_result) { {"_rid"=>"", "Databases" => [database1], "_count" => 1 } }
 
   let(:create_header) { headers = headers content_type }
   let(:create_body) { { "id" => database_name } }
-  let(:create_response) { { "id" => database_name, "_rid" => database_id, "_ts" => 1408176280, "_self" => "dbs\/K7J6AA==\/", "_etag" => "00001d00-0000-0000-0000-53ef10980000", "_colls" => "colls\/", "_users" => "users\/" } }
+  let(:create_response) { database1 }
 
-  let(:delete_header) {
-    {"User-Agent" => client, "x-ms-date" => http_date, "x-ms-version" => serv_version, "authorization" => signed_auth_with_id }
-  }
+  let(:delete_header) { default_header_with_signed_id }
   let(:delete_url) { "#{url}/#{resource_type}/#{database_id}" }
 
-  let(:get_header) { delete_header }
-  let(:get_response) { create_response }
+  let(:get_header) { default_header_with_signed_id }
+  let(:get_response) { database1 }
 
   let(:database) { Azure::DocumentDB::Database.new context, rest_client }
 
   def headers type
-    { type => "application/json", "x-ms-version" => serv_version, "x-ms-date" => http_date, "authorization" => signed_auth, "User-Agent" => client }
+    header = default_header.dup
+    header[type] = "application/json"
+    header
   end
 
   before(:each) {
@@ -57,6 +65,9 @@ describe Azure::DocumentDB::Database do
   }
 
   it "can list the existing databases" do
+    database.list
+    verify(rest_client).get(dbs_url, list_header)
+
     expect(database.list).to eq list_result
   end
 
