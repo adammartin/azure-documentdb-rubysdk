@@ -23,11 +23,7 @@ describe Azure::DocumentDB::Database do
   let(:database1) { {"id" => database_name, "_rid" => database_id, "_ts" => 1408176196, "_self" => "dbs\/0EwFAA==\/", "_etag" => "00001c00-0000-0000-0000-53ef10440000", "_colls" => "colls\/", "_users" => "users\/"} }
   let(:list_result) { {"_rid"=>"", "Databases" => [database1], "_count" => 1 } }
 
-  let(:create_header) {
-    headers = headers content_type
-    headers["User-Agent"] = client
-    headers
-  }
+  let(:create_header) { headers = headers content_type }
   let(:create_body) { { "id" => database_name } }
   let(:create_response) { { "id" => database_name, "_rid" => database_id, "_ts" => 1408176280, "_self" => "dbs\/K7J6AA==\/", "_etag" => "00001d00-0000-0000-0000-53ef10980000", "_colls" => "colls\/", "_users" => "users\/" } }
 
@@ -42,7 +38,7 @@ describe Azure::DocumentDB::Database do
   let(:database) { Azure::DocumentDB::Database.new context, rest_client }
 
   def headers type
-    { type => "application/json", "x-ms-version" => serv_version, "x-ms-date" => http_date, "authorization" => signed_auth }
+    { type => "application/json", "x-ms-version" => serv_version, "x-ms-date" => http_date, "authorization" => signed_auth, "User-Agent" => client }
   end
 
   before(:each) {

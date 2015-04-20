@@ -14,8 +14,7 @@ module Azure
       end
 
       def list
-        service_header = generic_header "get", "accept"
-        header = Azure::DocumentDB::Header.new.generate ["x-ms-version"], service_header
+        header = generic_header "get", "accept"
         JSON.parse(rest_client.get url, header)
       end
 
@@ -27,8 +26,7 @@ module Azure
 
       def create database_name
         body = { "id" => database_name }
-        service_header = generic_header "post", "Content-Type"
-        header = Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], service_header
+        header = generic_header "post", "Content-Type"
         JSON.parse(rest_client.post url, body.to_json, header)
       end
 
@@ -45,15 +43,10 @@ module Azure
         Time.now.httpdate
       end
 
-      def signed_auth time, verb, resource_id = ""
-        context.master_token.generate verb, resource_type, resource_id, time
-      end
-
       def header_for_resource_id verb, resource_id
         time = httpdate
         signed_auth = signed_auth time, verb, resource_id
-        service_header = header time, signed_auth
-        Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], service_header
+        header time, signed_auth
       end
 
       def generic_header verb, content
@@ -65,7 +58,11 @@ module Azure
       def header time, signed_auth, content = nil
         hash = { "x-ms-date" => time, "authorization" => signed_auth }
         hash[content] = "application/json" if content
-        hash
+        Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], hash
+      end
+
+      def signed_auth time, verb, resource_id = ""
+        context.master_token.generate verb, resource_type, resource_id, time
       end
 
       def url resource_id = nil
