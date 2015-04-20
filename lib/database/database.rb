@@ -19,6 +19,12 @@ module Azure
         JSON.parse(rest_client.get url, header)
       end
 
+      def get database_id
+        header = header_for_resource_id "get", database_id
+        get_url = url database_id
+        JSON.parse(rest_client.get get_url, header)
+      end
+
       def create database_name
         body = { "id" => database_name }
         service_header = generic_header "post", "Content-Type"
@@ -27,10 +33,7 @@ module Azure
       end
 
       def delete database_id
-        time = httpdate
-        signed_auth = signed_auth time, "delete", database_id
-        service_header = header time, signed_auth
-        header = Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], service_header
+        header = header_for_resource_id "delete", database_id
         delete_url = url database_id
         rest_client.delete delete_url, header
       end
@@ -44,6 +47,13 @@ module Azure
 
       def signed_auth time, verb, resource_id = ""
         context.master_token.generate verb, resource_type, resource_id, time
+      end
+
+      def header_for_resource_id verb, resource_id
+        time = httpdate
+        signed_auth = signed_auth time, verb, resource_id
+        service_header = header time, signed_auth
+        Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], service_header
       end
 
       def generic_header verb, content

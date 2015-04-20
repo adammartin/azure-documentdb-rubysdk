@@ -36,6 +36,9 @@ describe Azure::DocumentDB::Database do
   }
   let(:delete_url) { "#{url}/#{resource_type}/#{database_id}" }
 
+  let(:get_header) { delete_header }
+  let(:get_response) { create_response }
+
   let(:database) { Azure::DocumentDB::Database.new context, rest_client }
 
   def headers type
@@ -49,10 +52,12 @@ describe Azure::DocumentDB::Database do
     give(Time).now { time }
     give(time).httpdate { http_date }
     give(master_token).generate("get", resource_type, "", http_date) { signed_auth }
+    give(master_token).generate("get", resource_type, database_id, http_date) { signed_auth_with_id }
     give(master_token).generate("post", resource_type, "", http_date) { signed_auth }
     give(master_token).generate("delete", resource_type, database_id, http_date) { signed_auth_with_id }
     give(rest_client).get(dbs_url, list_header) { list_result.to_json }
     give(rest_client).post(dbs_url, create_body.to_json, create_header) { create_response.to_json }
+    give(rest_client).get("#{dbs_url}/#{database_id}", get_header) { get_response.to_json }
   }
 
   it "can list the existing databases" do
@@ -66,5 +71,9 @@ describe Azure::DocumentDB::Database do
   it "can delete a supplied database" do
     database.delete database_id
     verify(rest_client).delete delete_url, delete_header
+  end
+
+  it "can get a supplied database" do
+    expect(database.get database_id).to eq get_response
   end
 end
