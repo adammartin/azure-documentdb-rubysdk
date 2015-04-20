@@ -49,7 +49,7 @@ describe Azure::DocumentDB::Database do
     give(time).httpdate { http_date }
     give(master_token).generate("get", resource_type, "", http_date) { signed_auth }
     give(master_token).generate("post", resource_type, "", http_date) { signed_auth }
-    give(master_token).generate("delete", resource_type, "", http_date) { signed_auth }
+    give(master_token).generate("delete", resource_type, database_id, http_date) { signed_auth }
     give(rest_client).get(dbs_url, list_header) { list_result.to_json }
     give(rest_client).post(dbs_url, create_body.to_json, create_header) { create_response.to_json }
   }

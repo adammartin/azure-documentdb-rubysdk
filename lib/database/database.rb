@@ -14,22 +14,24 @@ module Azure
       end
 
       def list
-        service_header = header httpdate, "get", "accept"
+        service_header = generic_header "get", "accept"
         header = Azure::DocumentDB::Header.new.generate ["x-ms-version"], service_header
         JSON.parse(rest_client.get url, header)
       end
 
       def create database_name
         body = { "id" => database_name }
-        service_header = header httpdate, "post", "Content-Type"
+        service_header = generic_header "post", "Content-Type"
         header = Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], service_header
         JSON.parse(rest_client.post url, body.to_json, header)
       end
 
       def delete database_id
-        delete_url = url database_id
-        service_header = header httpdate, "delete"
+        time = httpdate
+        signed_auth = signed_auth time, "delete", database_id
+        service_header = header time, signed_auth
         header = Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], service_header
+        delete_url = url database_id
         rest_client.delete delete_url, header
       end
 
@@ -40,8 +42,17 @@ module Azure
         Time.now.httpdate
       end
 
-      def header time, verb, content = nil
-        signed_auth = context.master_token.generate verb, resource_type, "", time
+      def signed_auth time, verb, resource_id = ""
+        context.master_token.generate verb, resource_type, resource_id, time
+      end
+
+      def generic_header verb, content
+        time = httpdate
+        signed_auth = signed_auth time, verb
+        header time, signed_auth, content
+      end
+
+      def header time, signed_auth, content = nil
         hash = { "x-ms-date" => time, "authorization" => signed_auth }
         hash[content] = "application/json" if content
         hash
