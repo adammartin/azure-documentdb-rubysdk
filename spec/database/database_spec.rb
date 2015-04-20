@@ -11,6 +11,7 @@ describe Azure::DocumentDB::Database do
   let(:time) { gimme(Time) }
   let(:http_date) { "http_date" }
   let(:signed_auth) { "signed_auth" }
+  let(:signed_auth_with_id) { "signed_auth_with_id" }
   let(:serv_version) { "2014-08-21" }
   let(:database_name) { "new_database" }
   let(:accept) { "accept" }
@@ -31,7 +32,7 @@ describe Azure::DocumentDB::Database do
   let(:create_response) { { "id" => database_name, "_rid" => database_id, "_ts" => 1408176280, "_self" => "dbs\/K7J6AA==\/", "_etag" => "00001d00-0000-0000-0000-53ef10980000", "_colls" => "colls\/", "_users" => "users\/" } }
 
   let(:delete_header) {
-    {"User-Agent" => client, "x-ms-date" => http_date, "x-ms-version" => serv_version, "authorization" => signed_auth}
+    {"User-Agent" => client, "x-ms-date" => http_date, "x-ms-version" => serv_version, "authorization" => signed_auth_with_id }
   }
   let(:delete_url) { "#{url}/#{resource_type}/#{database_id}" }
 
@@ -49,7 +50,7 @@ describe Azure::DocumentDB::Database do
     give(time).httpdate { http_date }
     give(master_token).generate("get", resource_type, "", http_date) { signed_auth }
     give(master_token).generate("post", resource_type, "", http_date) { signed_auth }
-    give(master_token).generate("delete", resource_type, database_id, http_date) { signed_auth }
+    give(master_token).generate("delete", resource_type, database_id, http_date) { signed_auth_with_id }
     give(rest_client).get(dbs_url, list_header) { list_result.to_json }
     give(rest_client).post(dbs_url, create_body.to_json, create_header) { create_response.to_json }
   }
