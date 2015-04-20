@@ -31,7 +31,7 @@ describe Azure::DocumentDB::Database do
   let(:list_header) { headers accept }
   let(:list_result) { {"_rid"=>"", "Databases" => [database1], "_count" => 1 } }
 
-  let(:create_header) { headers = headers content_type }
+  let(:create_header) { headers content_type }
   let(:create_body) { { "id" => database_name } }
   let(:create_response) { database1 }
 
@@ -65,9 +65,6 @@ describe Azure::DocumentDB::Database do
   }
 
   it "can list the existing databases" do
-    database.list
-    verify(rest_client).get(dbs_url, list_header)
-
     expect(database.list).to eq list_result
   end
 
