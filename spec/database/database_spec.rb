@@ -28,15 +28,15 @@ describe Azure::DocumentDB::Database do
     header.freeze
   }
 
-  let(:list_header) { headers accept }
+  let(:list_header) { default_header }
   let(:list_result) { {"_rid"=>"", "Databases" => [database1], "_count" => 1 } }
 
-  let(:create_header) { headers content_type }
+  let(:create_header) { default_header }
   let(:create_body) { { "id" => database_name } }
   let(:create_response) { database1 }
 
   let(:delete_header) { default_header_with_signed_id }
-  let(:delete_url) { "#{url}/#{resource_type}/#{database_id}" }
+  let(:delete_url) { "#{dbs_url}/#{database_id}" }
 
   let(:get_header) { default_header_with_signed_id }
   let(:get_response) { database1 }
@@ -45,7 +45,6 @@ describe Azure::DocumentDB::Database do
 
   def headers type
     header = default_header.dup
-    header[type] = "application/json"
     header
   end
 

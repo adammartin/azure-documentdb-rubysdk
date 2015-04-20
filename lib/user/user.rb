@@ -15,7 +15,7 @@ module Azure
 
       def list database_id
         url = url database_id
-        header = generic_header "get", "accept"
+        header = header "get", database_id
         JSON.parse(rest_client.get url, header)
       end
 
@@ -25,19 +25,14 @@ module Azure
         Time.now.httpdate
       end
 
-      def generic_header verb, content
+      def header verb, resource_id = ""
         time = httpdate
-        signed_auth = signed_auth time, verb
-        header time, signed_auth, content
-      end
-
-      def header time, signed_auth, content = nil
+        signed_auth = signed_auth time, verb, resource_id
         hash = { "x-ms-date" => time, "authorization" => signed_auth }
-        hash[content] = "application/json" if content
         Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], hash
       end
 
-      def signed_auth time, verb, resource_id = ""
+      def signed_auth time, verb, resource_id
         context.master_token.generate verb, resource_type, resource_id, time
       end
 

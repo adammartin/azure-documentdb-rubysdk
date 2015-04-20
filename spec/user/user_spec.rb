@@ -31,7 +31,7 @@ describe Azure::DocumentDB::User do
     header.freeze
   }
 
-  let(:list_header) { headers accept }
+  let(:list_header) { default_header_with_signed_id }
   let(:list_result) { {"_rid"=>database_id, "Users"=>[user_record], "_count" => 1 } }
 
   let(:create_header) { header content_type }
@@ -51,12 +51,8 @@ describe Azure::DocumentDB::User do
     give(context).service_version { serv_version }
     give(Time).now { time }
     give(time).httpdate { http_date }
-    give(master_token).generate("get", resource_type, "", http_date) { signed_auth }
-    #give(master_token).generate("get", resource_type, database_id, http_date) { signed_auth_with_id }
-    #give(master_token).generate("post", resource_type, "", http_date) { signed_auth }
-    #give(master_token).generate("delete", resource_type, database_id, http_date) { signed_auth_with_id }
+    give(master_token).generate("get", resource_type, database_id, http_date) { signed_auth_with_id }
     give(rest_client).get(users_url, list_header) { list_result.to_json }
-    #give(rest_client).post(users_url, create_body.to_json, create_header) { create_response.to_json }
   }
 
   it "can list the existing databases" do
