@@ -28,14 +28,21 @@ module Azure
 
       def get database_id, user_id
         url = url database_id, user_id
-        header = secure_header.header "get", database_id
+        header = secure_header.header "get", user_id
         JSON.parse(rest_client.get url, header)
       end
 
       def delete database_id, user_id
         url = url database_id, user_id
-        header = secure_header.header "delete", database_id
+        header = secure_header.header "delete", user_id
         rest_client.delete url, header
+      end
+
+      def replace database_id, user_id, user_name
+        url = url database_id, user_id
+        body = { "id" => user_name }
+        header = secure_header.header "put", user_id
+        JSON.parse(rest_client.put url, body.to_json, header)
       end
 
       private
