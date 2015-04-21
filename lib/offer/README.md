@@ -21,14 +21,14 @@ Offer provides the functionality described in the [MSDN DocumentDB Database REST
 => {"_rid"=>"", "Offers"=>[], "_count"=>0}
 ```
 
-## Get Offer
+## Get Offer - PENDING
 ```
 ```
 
-## Replace Offer
+## Replace Offer - PENDING
 ```
 ```
 
-## Querying Offers
+## Querying Offers - PENDING
 ```
 ```

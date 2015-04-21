@@ -14,7 +14,7 @@ describe Azure::DocumentDB::Database do
   let(:database_id) { "0EWFAA==" }
   let(:default_header) { "default_header" }
   let(:default_header_with_signed_id) { "default_header_with_id" }
-  let(:database1) { {"id" => database_name, "_rid" => database_id, "_ts" => 1408176196, "_self" => "dbs\/0EwFAA==\/", "_etag" => "00001c00-0000-0000-0000-53ef10440000", "_colls" => "colls\/", "_users" => "users\/"} }
+  let(:database1) { {"id" => database_name, "_rid" => database_id, "_ts" => 1408176196} }
 
   let(:list_result) { {"_rid"=>"", "Databases" => [database1], "_count" => 1 } }
 
