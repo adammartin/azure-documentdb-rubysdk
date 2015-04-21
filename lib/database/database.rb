@@ -2,6 +2,7 @@ require 'json'
 require 'time'
 require_relative '../auth/master_token'
 require_relative '../header/header'
+require_relative '../header/secure_header'
 
 module Azure
   module DocumentDB
@@ -10,48 +11,34 @@ module Azure
         self.context = context
         self.rest_client = rest_client
         self.resource_type = "dbs"
+        self.secure_header = Azure::DocumentDB::SecureHeader.new context.master_token, resource_type
       end
 
       def list
-        header = header "get"
+        header = secure_header.header "get"
         JSON.parse(rest_client.get url, header)
       end
 
       def get database_id
-        header = header "get", database_id
+        header = secure_header.header "get", database_id
         get_url = url database_id
         JSON.parse(rest_client.get get_url, header)
       end
 
       def create database_name
         body = { "id" => database_name }
-        header = header "post"
+        header = secure_header.header "post"
         JSON.parse(rest_client.post url, body.to_json, header)
       end
 
       def delete database_id
-        header = header "delete", database_id
+        header = secure_header.header "delete", database_id
         delete_url = url database_id
         rest_client.delete delete_url, header
       end
 
       private
-      attr_accessor :context, :rest_client, :resource_type
-
-      def httpdate
-        Time.now.httpdate
-      end
-
-      def header verb, resource_id = ""
-        time = httpdate
-        signed_auth = signed_auth time, verb, resource_id
-        hash = { "x-ms-date" => time, "authorization" => signed_auth }
-        Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], hash
-      end
-
-      def signed_auth time, verb, resource_id
-        context.master_token.generate verb, resource_type, resource_id, time
-      end
+      attr_accessor :context, :rest_client, :resource_type, :secure_header
 
       def url resource_id = nil
         target = "/" + resource_id if resource_id
