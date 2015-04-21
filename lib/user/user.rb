@@ -26,6 +26,18 @@ module Azure
         JSON.parse(rest_client.post url, body.to_json, header)
       end
 
+      def get database_id, user_id
+        url = url database_id, user_id
+        header = secure_header.header "get", database_id
+        JSON.parse(rest_client.get url, header)
+      end
+
+      def delete database_id, user_id
+        url = url database_id, user_id
+        header = secure_header.header "delete", database_id
+        rest_client.delete url, header
+      end
+
       private
       attr_accessor :context, :rest_client, :resource_type, :secure_header
 

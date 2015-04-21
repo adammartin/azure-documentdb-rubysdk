@@ -21,7 +21,7 @@ describe Azure::DocumentDB::Database do
   let(:create_body) { { "id" => database_name } }
   let(:create_response) { database1 }
 
-  let(:delete_url) { "#{dbs_url}/#{database_id}" }
+  let(:target_url) { "#{dbs_url}/#{database_id}" }
 
   let(:get_response) { database1 }
 
@@ -38,7 +38,7 @@ describe Azure::DocumentDB::Database do
     give(secure_header).header("delete", database_id) { default_header_with_signed_id }
     give(rest_client).get(dbs_url, default_header) { list_result.to_json }
     give(rest_client).post(dbs_url, create_body.to_json, default_header) { create_response.to_json }
-    give(rest_client).get("#{dbs_url}/#{database_id}", default_header_with_signed_id) { get_response.to_json }
+    give(rest_client).get(target_url, default_header_with_signed_id) { get_response.to_json }
   }
 
   it "can list the existing databases" do
@@ -51,7 +51,7 @@ describe Azure::DocumentDB::Database do
 
   it "can delete a supplied database" do
     database.delete database_id
-    verify(rest_client).delete delete_url, default_header_with_signed_id
+    verify(rest_client).delete target_url, default_header_with_signed_id
   end
 
   it "can get a supplied database" do
