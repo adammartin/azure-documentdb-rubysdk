@@ -34,7 +34,6 @@ describe Azure::DocumentDB::User do
   before(:each) {
     give(context).master_token { master_token }
     give(context).endpoint { url }
-    give(context).service_version { serv_version }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
     give(secure_header).header("get", database_id) { get_header }
     give(secure_header).header("post", database_id) { post_header }
