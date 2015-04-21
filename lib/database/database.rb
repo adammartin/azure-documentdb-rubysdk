@@ -1,6 +1,5 @@
 require 'json'
 require 'time'
-require 'uri'
 require_relative '../auth/master_token'
 require_relative '../header/header'
 
