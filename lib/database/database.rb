@@ -1,7 +1,5 @@
 require 'json'
 require 'time'
-require_relative '../auth/master_token'
-require_relative '../header/header'
 require_relative '../header/secure_header'
 
 module Azure
