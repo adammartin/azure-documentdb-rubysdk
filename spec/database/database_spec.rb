@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'database/database'
+require 'json'
 
 describe Azure::DocumentDB::Database do
   let(:url) { "our_url" }

@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'user/user'
+require 'json'
 
 describe Azure::DocumentDB::User do
   let(:user_name) { "user_name" }
@@ -21,6 +22,7 @@ describe Azure::DocumentDB::User do
   let(:list_result) { {"_rid"=>database_id, "Users"=>[user_record], "_count" => 1 } }
 
   let(:create_body) { { "id" => user_name } }
+  let(:create_response) { user_record }
 
   let(:user) { Azure::DocumentDB::User.new context, rest_client }
 
@@ -30,10 +32,16 @@ describe Azure::DocumentDB::User do
     give(context).service_version { serv_version }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
     give(secure_header).header("get", database_id) { default_header_with_signed_id }
+    give(secure_header).header("post", database_id) { default_header_with_signed_id }
     give(rest_client).get(users_url, default_header_with_signed_id) { list_result.to_json }
+    give(rest_client).post(users_url, create_body.to_json, default_header_with_signed_id) { create_response.to_json }
   }
 
   it "can list the existing databases" do
     expect(user.list database_id).to eq list_result
+  end
+
+  it "can create a new user" do
+    expect(user.create database_id, user_name).to eq create_response
   end
 end
