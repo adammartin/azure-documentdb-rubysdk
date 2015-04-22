@@ -1,6 +1,4 @@
 require 'json'
-require 'time'
-require 'uri'
 require_relative '../header/secure_header'
 
 module Azure
