@@ -3,6 +3,18 @@ require_relative '../header/secure_header'
 
 module Azure
   module DocumentDB
+    module Permissions
+      class Mode
+        class << self
+          attr_reader :ALL, :READ
+        end
+
+        private
+        @ALL = "All".freeze
+        @READ = "Read".freeze
+      end
+    end
+
     class Permission
       def initialize context, rest_client
         self.context = context
