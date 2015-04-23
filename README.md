@@ -14,6 +14,7 @@ Require the SDK
 
 * [Database](/lib/database) - CRUD operations associated to a database.
 * [User](/lib/user) - CRUD operations associated to a user.
+* [Permission](/lib/permission) - CRUD operations associated to a permission.
 
 # Errors
 

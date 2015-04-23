@@ -30,6 +30,13 @@ module Azure
         JSON.parse(rest_client.get url, header)
       end
 
+      def create database_id, user_id, permission_name, permission_mode, resource
+        url = url database_id, user_id
+        header = secure_header.header "post", user_id
+        body = { "id" => permission_name, "permissionMode" => permission_mode, "resource" => resource }
+        JSON.parse(rest_client.post url, body.to_json, header)
+      end
+
       private
       attr_accessor :context, :rest_client, :resource_type, :parent_resource_type, :secure_header
 

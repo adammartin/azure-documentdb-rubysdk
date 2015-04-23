@@ -11,7 +11,7 @@ User provides the functionality described in the [MSDN DocumentDB Database REST 
 > url_endpoint = ... # your url address
 > master_key = ... # your master_key
 >
-> context = Azure::DocumentDB::Context.new url_endpoint, master_keys
+> context = Azure::DocumentDB::Context.new url_endpoint, master_key
 > database = Azure::DocumentDB::Database.new context, RestClient
 > user = Azure::DocumentDB::User.new context, RestClient
 > db_instance = database.list["Databases"][0] # or you can use get if you know the exact _rid
