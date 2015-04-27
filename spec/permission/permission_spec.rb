@@ -32,7 +32,7 @@ describe Azure::DocumentDB::Permission do
     give(context).endpoint { url }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
     give(secure_header).header("get", user_id) { list_header }
-    give(secure_header).header("post", user_id) { create_header}
+    give(secure_header).header("post", user_id) { create_header }
     give(rest_client).get(permission_url, list_header) { list_result.to_json }
     give(rest_client).post(permission_url, create_body.to_json, create_header) { permission_record.to_json }
   }
