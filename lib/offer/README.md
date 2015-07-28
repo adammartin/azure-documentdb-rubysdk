@@ -21,8 +21,11 @@ Offer provides the functionality described in the [MSDN DocumentDB Database REST
 => {"_rid"=>"", "Offers"=>[], "_count"=>0}
 ```
 
-## Get Offer - PENDING
+## Get Offer
 ```
+> offer_id = "qKcE"
+> offer.get offer_id
+=> {"offerType"=>"S1", "resource"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "offerResourceId"=>"1BZ1AMBZFwA=", "id"=>"qKcE", "_rid"=>"qKcE", "_ts"=>1430919012, "_self"=>"offers/qKcE/", "_etag"=>""00000200-0000-0000-0000-554a17640000""}
 ```
 
 ## Replace Offer - PENDING
