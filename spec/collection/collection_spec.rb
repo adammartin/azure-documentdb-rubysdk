@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'json'
 require 'context'
 require 'header/secure_header'
 require 'auth/master_token'

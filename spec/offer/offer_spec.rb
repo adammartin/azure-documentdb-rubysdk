@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'json'
 require 'offer/offer'
 
 describe Azure::DocumentDB::Offer do

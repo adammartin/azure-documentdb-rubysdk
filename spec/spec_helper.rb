@@ -1,5 +1,6 @@
 require 'gimme'
 require 'simplecov'
+require 'json'
 
 def no_methods_called_on_object a_test_double
   verification = verify(a_test_double, 0)

@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'user/user'
-require 'json'
 
 describe Azure::DocumentDB::User do
   let(:user_name) { "user_name" }
