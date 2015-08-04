@@ -1,7 +1,7 @@
 require 'json'
 require_relative '../header/secure_header'
 require_relative 'permission_mode'
-require_relative 'replace_permission'
+require_relative 'permission_definition'
 
 module Azure
   module DocumentDB

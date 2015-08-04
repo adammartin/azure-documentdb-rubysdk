@@ -3,7 +3,7 @@ require 'context'
 require 'header/secure_header'
 require 'auth/master_token'
 require 'permission/permission'
-require 'permission/replace_permission'
+require 'permission/permission_definition'
 require 'permission/permission_mode'
 
 describe Azure::DocumentDB::Permission do
@@ -19,7 +19,7 @@ describe Azure::DocumentDB::Permission do
   let(:rest_client) { gimme }
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
-  let(:replace_permission) { gimme(Azure::DocumentDB::ReplacePermission) }
+  let(:replace_permission) { gimme(Azure::DocumentDB::PermissionDefinition) }
   let(:perm_name) { "collection_name" }
   let(:perm_mode) { Azure::DocumentDB::Permissions::Mode.ALL }
   let(:perm_rid) { "perm_rid" }
