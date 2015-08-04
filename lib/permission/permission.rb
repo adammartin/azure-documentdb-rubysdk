@@ -1,20 +1,10 @@
 require 'json'
 require_relative '../header/secure_header'
+require_relative 'permission_mode'
+require_relative 'replace_permission'
 
 module Azure
   module DocumentDB
-    module Permissions
-      class Mode
-        class << self
-          attr_reader :ALL, :READ
-        end
-
-        private
-        @ALL = "All".freeze
-        @READ = "Read".freeze
-      end
-    end
-
     class Permission
       def initialize context, rest_client
         self.context = context
@@ -37,10 +27,16 @@ module Azure
         JSON.parse(rest_client.post url, body.to_json, header)
       end
 
-      def get database_id, user_id, permission_id
-        url = url database_id, user_id, permission_id
-        header = secure_header.header "get", permission_id
+      def get database_id, user_id, permission_rid
+        url = url database_id, user_id, permission_rid
+        header = secure_header.header "get", permission_rid
         JSON.parse(rest_client.get url, header)
+      end
+
+      def replace database_id, user_id, permission_rid, replace_permission
+        url = url database_id, user_id, permission_rid
+        header = secure_header.header "put", permission_rid
+        JSON.parse(rest_client.put url, replace_permission.body, header)
       end
 
       private
