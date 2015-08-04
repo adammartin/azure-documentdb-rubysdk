@@ -21,9 +21,6 @@ Permission provides the functionality desrcribed in the [MSDN DocumentDB Databas
 > user_instance = user.list(db_instance_id)["Users"][0]
 > user_id = user_instance["_rid"]
 > collection_id = collection.list(db_instance_id)["DocumentCollections"][0]["_rid"]
-
-[TODO: NEED TO PUT COLLECTION EXAMPLE HERE]
-
 ```
 
 ## List Permissions for a User on a Database
