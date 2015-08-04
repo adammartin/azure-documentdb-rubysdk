@@ -39,8 +39,11 @@ describe Azure::DocumentDB::Permission do
   let(:create_body) { "create_body" }
 
   let(:get_header) { "get_header" }
+
   let(:replace_header) { "replace_header" }
   let(:replace_body) { "replace_body" }
+
+  let(:delete_header) { "delete_header" }
 
   let(:permission) { Azure::DocumentDB::Permission.new context, rest_client }
 
@@ -54,6 +57,7 @@ describe Azure::DocumentDB::Permission do
     give(secure_header).header("post", user_id) { create_header }
     give(secure_header).header("put", perm_rid) { replace_header }
     give(secure_header).header("get", perm_rid) { get_header }
+    give(secure_header).header("delete", perm_rid) { delete_header }
     give(rest_client).get(permission_list_url, list_header) { list_result.to_json }
     give(rest_client).post(permission_list_url, create_body, create_header) { permission_record.to_json }
     give(rest_client).get(permission_url, get_header) {permission_record.to_json}
@@ -74,5 +78,10 @@ describe Azure::DocumentDB::Permission do
 
   it "can replace an existing permission for a given user on a database" do
     expect(permission.replace database_id, user_id, perm_rid, replace_permission).to eq updated_perm_record
+  end
+
+  it "can delete an existing permission for a given user on a database" do
+    permission.delete database_id, user_id, perm_rid
+    verify(rest_client).delete permission_url, delete_header
   end
 end

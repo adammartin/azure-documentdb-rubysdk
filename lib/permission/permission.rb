@@ -38,6 +38,12 @@ module Azure
         JSON.parse(rest_client.put url, replace_permission.body, header)
       end
 
+      def delete database_id, user_id, permission_rid
+        url = url database_id, user_id, permission_rid
+        header = secure_header.header "delete", permission_rid
+        rest_client.delete url, header
+      end
+
       private
       attr_accessor :context, :rest_client, :resource_type, :parent_resource_type, :secure_header
 
