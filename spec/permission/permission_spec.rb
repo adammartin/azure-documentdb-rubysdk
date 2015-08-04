@@ -19,6 +19,7 @@ describe Azure::DocumentDB::Permission do
   let(:rest_client) { gimme }
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
+  let(:create_permission) { gimme(Azure::DocumentDB::PermissionDefinition) }
   let(:replace_permission) { gimme(Azure::DocumentDB::PermissionDefinition) }
   let(:perm_name) { "collection_name" }
   let(:perm_mode) { Azure::DocumentDB::Permissions::Mode.ALL }
@@ -35,7 +36,7 @@ describe Azure::DocumentDB::Permission do
   let(:list_result) { { "_rid" => user_id, "Permissions" => [permission_record], "_count" => 1 } }
 
   let(:create_header) { "create_header" }
-  let(:create_body) { {"id"=>perm_name, "permissionMode" => perm_mode, "resource"=>dbs_resource} }
+  let(:create_body) { "create_body" }
 
   let(:get_header) { "get_header" }
   let(:replace_header) { "replace_header" }
@@ -48,12 +49,13 @@ describe Azure::DocumentDB::Permission do
     give(context).endpoint { url }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
     give(replace_permission).body { replace_body }
+    give(create_permission).body { create_body }
     give(secure_header).header("get", user_id) { list_header }
     give(secure_header).header("post", user_id) { create_header }
     give(secure_header).header("put", perm_rid) { replace_header }
     give(secure_header).header("get", perm_rid) { get_header }
     give(rest_client).get(permission_list_url, list_header) { list_result.to_json }
-    give(rest_client).post(permission_list_url, create_body.to_json, create_header) { permission_record.to_json }
+    give(rest_client).post(permission_list_url, create_body, create_header) { permission_record.to_json }
     give(rest_client).get(permission_url, get_header) {permission_record.to_json}
     give(rest_client).put(permission_url, replace_body, replace_header) { updated_perm_record.to_json }
   }
@@ -63,7 +65,7 @@ describe Azure::DocumentDB::Permission do
   end
 
   it "can create a new permission for a given user on a database" do
-    expect(permission.create database_id, user_id, perm_name, perm_mode, dbs_resource).to eq permission_record
+    expect(permission.create database_id, user_id, create_permission).to eq permission_record
   end
 
   it "can get a permission for a given user on a database" do
