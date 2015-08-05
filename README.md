@@ -19,7 +19,7 @@ Require the SDK
 
 # Errors
 
-API errors will be allowed to bubble up for clarity reasons.  For example supplying the wrong master key will result in a 401 error which will be thrown by the [RestClient](https://github.com/rest-client/rest-client) api.
+API errors will be allowed to bubble up for clarity reasons.  For example supplying the wrong master key will result in a 401 error or a 409 error will result from using a resource token that is not authorized for the requested operation or resource.  These error will be thrown by the [RestClient](https://github.com/rest-client/rest-client) api.
 
 # Development
 
