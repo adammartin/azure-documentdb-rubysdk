@@ -68,3 +68,16 @@ With custom indexing
 > coll_to_del_rid = "1BZ1AOr7lgA="
 > collection.delete db_instance_id, coll_to_del_rid
 ```
+
+## Using a Resource Token
+
+Per the documentation a resource token is allowed for list, get, and delete operations.  In each case you can simply add the resource token as an optional argument.  Below is an example of a get operation.
+
+```
+> perm_rid = # insert your permission resource id here
+> permission = Azure::DocumentDB::Permission.new context, RestClient
+> resource_token = permission.resource_token db_instance_id, user_id, perm_rid
+> collection.get db_instance_id, collection_id, resource_token
+
+=> {"id"=>"sample_collection", "indexingPolicy"=>{"indexingMode"=>"consistent", "automatic"=>true, "IncludedPaths"=>[{"Path"=>"/", "IndexType"=>"Hash", "NumericPrecision"=>3, "StringPrecision"=>3}, {"Path"=>"/"_ts"/?", "IndexType"=>"Range", "NumericPrecision"=>6}], "ExcludedPaths"=>[]}, "_rid"=>"1BZ1AMBZFwA=", "_ts"=>1430919012, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "_etag"=>""00000100-0000-0000-0000-554a17640000"", "_docs"=>"docs/", "_sprocs"=>"sprocs/", "_triggers"=>"triggers/", "_udfs"=>"udfs/", "_conflicts"=>"conflicts/"}
+```
