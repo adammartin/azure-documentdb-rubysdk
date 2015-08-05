@@ -6,9 +6,19 @@ describe Azure::DocumentDB::IndexPath do
   let(:path) { "A valid document path including wildcards value of ? and *." }
   let(:body) { {"Path" => path, "indexType" => index_type} }
   let(:index_path) { Azure::DocumentDB::IndexPath.new path, index_type }
+  let(:root_path_body) { Azure::DocumentDB::IndexPath.new("\/", index_type).body }
+  let(:ts_path_body) { Azure::DocumentDB::IndexPath.new("/\"_ts\"/?", Azure::DocumentDB::IndexType.RANGE).body }
 
   it "Can generate an index path" do
     expect(index_path.body).to eq body.to_json
+  end
+
+  it "Has a default root path" do
+    expect(Azure::DocumentDB::IndexPath.ROOT_PATH.body).to eq root_path_body
+  end
+
+  it "Has a default root path" do
+    expect(Azure::DocumentDB::IndexPath.TS_PATH.body).to eq ts_path_body
   end
 
   context "When supplied a numeric precision" do

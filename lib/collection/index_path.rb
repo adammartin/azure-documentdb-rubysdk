@@ -31,6 +31,14 @@ module Azure
         path["StringPrecision"] = precision
       end
 
+      def self.ROOT_PATH
+        @@root_path ||= IndexPath.new "\/", IndexType.HASH
+      end
+
+      def self.TS_PATH
+        @@ts_path ||= IndexPath.new "/\"_ts\"/?", IndexType.RANGE
+      end
+
       private
       attr_accessor :path
 
