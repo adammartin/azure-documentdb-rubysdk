@@ -3,6 +3,7 @@ require 'context'
 require 'header/secure_header'
 require 'auth/master_token'
 require 'collection/collection'
+require 'collection/index_policy'
 
 describe Azure::DocumentDB::Collection do
   let(:url) { "our_url" }
@@ -18,7 +19,8 @@ describe Azure::DocumentDB::Collection do
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
   let(:coll_name) { "some_name" }
   let(:coll_id) { "HN49AMgSAwA=" }
-  let(:coll_record) { { "id" => coll_name, "_rid" => coll_id, "_self" => coll_url, "indexingPolicy" => []} }
+  let(:policy_body) { "policy_body" }
+  let(:coll_record) { { "id" => coll_name, "_rid" => coll_id, "_self" => coll_url, "indexingPolicy" => policy_body } }
 
   let(:list_header) { "list_header" }
   let(:list_result) { { "_rid"=>database_id, "DocumentCollections"=>[coll_record]} }
@@ -32,7 +34,7 @@ describe Azure::DocumentDB::Collection do
 
   before(:each) {
     give(context).master_token { master_token }
-    give(context).endpoint {url}
+    give(context).endpoint { url }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
     give(secure_header).header("get", database_id) { list_header }
     give(secure_header).header("post", database_id) { create_header }
@@ -53,6 +55,19 @@ describe Azure::DocumentDB::Collection do
 
   it "can create a new collection in a database" do
     expect(collection.create database_id, coll_name).to eq coll_record
+  end
+
+  context "When a custom policy is used" do
+    let(:policy) { gimme(Azure::DocumentDB::IndexPolicy) }
+    let(:create_body) { { "id" => coll_name, "IndexPolicy" => policy_body } }
+
+    before(:each) {
+      give(policy).body { policy_body }
+    }
+
+    it "can create a new collection in a database" do
+      expect(collection.create database_id, coll_name, policy).to eq coll_record
+    end
   end
 
   it "can get a collection" do

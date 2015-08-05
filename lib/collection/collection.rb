@@ -1,5 +1,6 @@
 require 'json'
 require_relative '../header/secure_header'
+require_relative 'index_policy'
 
 module Azure
   module DocumentDB
@@ -17,9 +18,10 @@ module Azure
         JSON.parse(rest_client.get url, header)
       end
 
-      def create database_id, collection_name
+      def create database_id, collection_name, policy = nil
         url = url database_id
         body = { "id" => collection_name }
+        body["IndexPolicy"] = policy.body if policy
         header = secure_header.header "post", database_id
         JSON.parse(rest_client.post url, body.to_json, header)
       end

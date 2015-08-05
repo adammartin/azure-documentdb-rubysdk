@@ -43,9 +43,17 @@ Indexing is a mildly complex creature in DocumentDB.  Be sure to read and unders
 ```
 
 ## Create a Collection for a Database Instance
+
+With default indexing
 ```
 > collection.create db_instance_id, "sample_collection"
 => {"id"=>"sample_collection", "indexingPolicy"=>{"indexingMode"=>"consistent", "automatic"=>true, "IncludedPaths"=>[{"Path"=>"/", "IndexType"=>"Hash", "NumericPrecision"=>3, "StringPrecision"=>3}, {"Path"=>"/"_ts"/?", "IndexType"=>"Range", "NumericPrecision"=>6}], "ExcludedPaths"=>[]}, "_rid"=>"1BZ1AMBZFwA=", "_ts"=>1430919012, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "_etag"=>""00000100-0000-0000-0000-554a17640000"", "_docs"=>"docs/", "_sprocs"=>"sprocs/", "_triggers"=>"triggers/", "_udfs"=>"udfs/", "_conflicts"=>"conflicts/"}
+```
+
+With custom indexing
+```
+> collection.create db_instance_id, "sample_custom_collection", policy
+=> {"id"=>"sample_custom_collection", "indexingPolicy"=>{"indexingMode"=>"consistent", "automatic"=>true, "IncludedPaths"=>[{"Path"=>"/", "IndexType"=>"Hash", "NumericPrecision"=>3, "StringPrecision"=>3}, {"Path"=>"/"_ts"/?", "IndexType"=>"Range", "NumericPrecision"=>6}], "ExcludedPaths"=>[]}, "_rid"=>"1BZ1AOr7lgA=", "_ts"=>1438793238, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AOr7lgA=/", "_etag"=>""00000100-0000-0000-0000-55c23e160000"", "_docs"=>"docs/", "_sprocs"=>"sprocs/", "_triggers"=>"triggers/", "_udfs"=>"udfs/", "_conflicts"=>"conflicts/"}
 ```
 
 ## Get a Collection for a Database Instance
