@@ -28,6 +28,8 @@ describe Azure::DocumentDB::Collection do
   let(:create_header) { "create_header" }
   let(:create_body) { { "id" => coll_name } }
 
+  let(:delete_header) { "delete_header" }
+
   let(:get_coll_header) { "get_header" }
 
   let(:collection) { Azure::DocumentDB::Collection.new context, rest_client }
@@ -39,6 +41,7 @@ describe Azure::DocumentDB::Collection do
     give(secure_header).header("get", database_id) { list_header }
     give(secure_header).header("post", database_id) { create_header }
     give(secure_header).header("get", coll_id) { get_coll_header }
+    give(secure_header).header("delete", coll_id) { delete_header }
     give(rest_client).get(full_coll_url, list_header) { list_result.to_json }
     give(rest_client).post(full_coll_url, create_body.to_json, create_header) { coll_record.to_json }
     give(rest_client).get(target_coll_url, get_coll_header) { coll_record.to_json }
@@ -72,5 +75,10 @@ describe Azure::DocumentDB::Collection do
 
   it "can get a collection" do
     expect(collection.get database_id, coll_id).to eq coll_record
+  end
+
+  it "can delete a collection" do
+    collection.delete database_id, coll_id
+    verify(rest_client).delete target_coll_url, delete_header
   end
 end
