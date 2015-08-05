@@ -18,6 +18,24 @@ Database provides functionality described in the [MSDN DocumentDB Database REST 
 > db_instance_id = db_instance["_rid"]
 ```
 
+## Instantiation of a custom Indexing Policy
+
+Indexing is a mildly complex creature in DocumentDB.  Be sure to read and understand the concept in Microsofts official Collection documentation.
+
+```
+> root_path = Azure::DocumentDB::IndexPath.ROOT_PATH # Default root path settings from Azure it is immutable
+> custom_timestamp_path = Azure::DocumentDB::IndexPath.new "/\"_ts\"/?", Azure::DocumentDB::IndexType.RANGE
+> custom_timestamp_path.numeric_precision 7 # set the precision to a higher level
+>
+> include_paths = [root_path, custom_timestamp_path]
+> exclude_paths = []
+> indexing_mode = Azure::DocumentDB::IndexingMode.CONSISTENT
+> automatic = true
+>
+> policy = Azure::DocumentDB::IndexPolicy.new automatic, indexing_mode, include_paths, exclude_paths
+
+```
+
 ## List Collections for a Database Instance
 ```
 > collection.list db_instance_id

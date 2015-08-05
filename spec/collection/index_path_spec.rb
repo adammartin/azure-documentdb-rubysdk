@@ -17,8 +17,18 @@ describe Azure::DocumentDB::IndexPath do
     expect(Azure::DocumentDB::IndexPath.ROOT_PATH.body).to eq root_path_body
   end
 
+  it "Will return a default root path cannot be changed" do
+    root_path = Azure::DocumentDB::IndexPath.ROOT_PATH
+    expect{root_path.numeric_precision 7}.to raise_error NoMethodError
+  end
+
   it "Has a default root path" do
     expect(Azure::DocumentDB::IndexPath.TS_PATH.body).to eq ts_path_body
+  end
+
+  it "Will return a ts path cannot be changed" do
+    ts_path = Azure::DocumentDB::IndexPath.TS_PATH
+    expect{ts_path.numeric_precision 7}.to raise_error NoMethodError
   end
 
   context "When supplied a numeric precision" do
