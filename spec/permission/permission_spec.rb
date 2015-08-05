@@ -5,6 +5,7 @@ require 'auth/master_token'
 require 'permission/permission'
 require 'permission/permission_definition'
 require 'permission/permission_mode'
+require 'auth/resource_token'
 
 describe Azure::DocumentDB::Permission do
   let(:url) { "our_url" }
@@ -21,6 +22,7 @@ describe Azure::DocumentDB::Permission do
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
   let(:create_permission) { gimme(Azure::DocumentDB::PermissionDefinition) }
   let(:replace_permission) { gimme(Azure::DocumentDB::PermissionDefinition) }
+  let(:resource_token) { gimme(Azure::DocumentDB::ResourceToken) }
   let(:perm_name) { "collection_name" }
   let(:perm_mode) { Azure::DocumentDB::Permissions::Mode.ALL }
   let(:perm_rid) { "perm_rid" }
@@ -62,6 +64,7 @@ describe Azure::DocumentDB::Permission do
     give(rest_client).post(permission_list_url, create_body, create_header) { permission_record.to_json }
     give(rest_client).get(permission_url, get_header) {permission_record.to_json}
     give(rest_client).put(permission_url, replace_body, replace_header) { updated_perm_record.to_json }
+    give(Azure::DocumentDB::ResourceToken).new(permission_record) { resource_token }
   }
 
   it "can list the existing permissions for a database for a given user" do
@@ -74,6 +77,10 @@ describe Azure::DocumentDB::Permission do
 
   it "can get a permission for a given user on a database" do
     expect(permission.get database_id, user_id, perm_rid).to eq permission_record
+  end
+
+  it "can get a resource_token for a given user on a database" do
+    expect(permission.resource_token database_id, user_id, perm_rid).to eq resource_token
   end
 
   it "can replace an existing permission for a given user on a database" do

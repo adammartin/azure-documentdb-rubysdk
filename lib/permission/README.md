@@ -56,6 +56,17 @@ Third be careful to read the [rules](https://msdn.microsoft.com/en-us/library/az
 
 => {"id"=>"ExamplePermission", "permissionMode"=>"All", "resource"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=", "_rid"=>"1BZ1AFzDMABeWbGCS-8ZAA==", "_ts"=>1438631312, "_self"=>"dbs/1BZ1AA==/users/1BZ1AFzDMAA=/permissions/1BZ1AFzDMABeWbGCS-8ZAA==/", "_etag"=>""00000300-0000-0000-0000-55bfc5900000"", "_token"=>"type=resource&ver=1&sig=ciz2fCxVPCaIlUph7YPhmQ==;GIBUHHaAIB0s5brSP48Pbn9LOtpzZ1oEY0RD93qCZi49wjA5pLAVSymMIG6ZLH5Y1JCLj3XiMUPfpyKF5DYvmeONA1gBo2MvR2BPVGDprjO4woyWvHzkTtBa3Pf5vLIrpz/I+rtcdSDOK3YQFpbxDx9HTvB4XGXjxvR5DsID5dTEbPfBVweftDXrAESktDlhWUUnNFzdhCq4AG6sF4tdY0Zw1Z+IvMgZ+rLD967nbyU=;"}
 ```
+## Get a Resource Token
+
+An Azure::DocumentDB::ResourceToken is an abstraction for the _token that sits in a retrieved permission.
+
+```
+> perm_rid = "1BZ1AFzDMABeWbGCS-8ZAA=="
+> permission.resource_token db_instance_id, user_id, perm_rid
+
+resource_token = permission.resource_token db_instance_id, user_id, perm_rid
+ => #<Azure::DocumentDB::ResourceToken:0x007f8f941f1938 @encoded_token="type%3Dresource%26ver%3D1%26sig%3D4782G27WsbB%2FzWghTC2qnA%3D%3D%3BIDDDRF5rUNLZ%2ByZDGz3hRmkhHtpOMyrm7XyVlt%2B4cScFMeCVV1Nn2MjQQ20eT2DEbVk%2BtgTSkWSdzCjXiGdOjBi1l46NRkE7dVQK4Y%2FKzEpsBAURW3qvurGrZlfXPPMoHm3sampfUG2J2XCM4k%2FRJ62ELIOAvg%2FKTj3f7TMGdEb8ICfQZuam4U8USDmaFrym%2Bbf1%2Fk1PjDDDBch2U6t%2F0TdKL%2BjuTce0WEFLxrtIFQA%3D%3B">
+```
 
 ## Replace a Specific Permission
 

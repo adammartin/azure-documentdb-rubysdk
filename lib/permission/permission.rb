@@ -1,4 +1,5 @@
 require 'json'
+require_relative '../auth/resource_token'
 require_relative '../header/secure_header'
 require_relative 'permission_mode'
 require_relative 'permission_definition'
@@ -30,6 +31,10 @@ module Azure
         url = url database_id, user_id, permission_rid
         header = secure_header.header "get", permission_rid
         JSON.parse(rest_client.get url, header)
+      end
+
+      def resource_token database_id, user_id, permission_rid
+        Azure::DocumentDB::ResourceToken.new get(database_id, user_id, permission_rid)
       end
 
       def replace database_id, user_id, permission_rid, replace_permission
