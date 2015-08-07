@@ -25,9 +25,6 @@ describe Azure::DocumentDB::Document do
   let(:document_server_body) { { "_rid" => document_rid }.merge document_body }
   let(:document) { Azure::DocumentDB::Document.new context, rest_client, database_id, collection_rid }
 
-  # Lets manage "id" as a seperate thing that is supplied during create and merged
-  # Need to error if document already contains "id" content.
-
   before(:each) {
     give(context).master_token { master_token }
     give(context).endpoint { url }
@@ -35,27 +32,48 @@ describe Azure::DocumentDB::Document do
   }
 
   shared_examples "when supplying an indexing directive" do
-    let(:create_header_indexing) { "x-ms-indexing-directive" }
-    let(:indexing_directive) { Azure::DocumentDB::Documents::Indexing.INCLUDE }
-    let(:index_dir_hash) { { create_header_indexing => indexing_directive } }
-    let(:create_header_w_indexing) { create_header_base.merge index_dir_hash }
+    context "when supplying an indexing directive" do
+      let(:create_header_indexing) { "x-ms-indexing-directive" }
+      let(:indexing_directive) { Azure::DocumentDB::Documents::Indexing.INCLUDE }
+      let(:index_dir_hash) { { create_header_indexing => indexing_directive } }
+      let(:create_header_w_indexing) { create_header_base.merge index_dir_hash }
 
-    before(:each) {
-      give(rest_client).post(documents_url, document_body.to_json, create_header_w_indexing) { document_server_body.to_json }
-    }
+      before(:each) {
+        give(rest_client).post(documents_url, document_body.to_json, create_header_w_indexing) { document_server_body.to_json }
+      }
 
-    it "can create a document for a collection" do
-      expect(document.create document_id, raw_document_json, indexing_directive).to eq document_server_body
+      it "can create a document for a collection" do
+        expect(document.create document_id, raw_document_json, indexing_directive).to eq document_server_body
+      end
+    end
+  end
+
+  shared_examples "when an Id exists in the document already" do
+    context "when an Id exists in the document already" do
+      let(:raw_document) { { "key" => "value", "id"=>document_id } }
+
+      include_examples "when not supplying an indexing directive"
+      include_examples "when supplying an indexing directive"
+
+      context "and the id in the document does not match the supplied id," do
+        let(:raw_document) { { "key" => "value", "id"=>"Id from some other context" } }
+
+        it "throws an IdExistsError" do
+          expect{document.create document_id, raw_document_json}.to raise_error Azure::DocumentDB::Documents::IdExistsError
+        end
+      end
     end
   end
 
   shared_examples "when not supplying an indexing directive" do
-    before(:each) {
-      give(rest_client).post(documents_url, document_body.to_json, create_header_base) { document_server_body.to_json }
-    }
+    context "when not supplying an indexing directive" do
+      before(:each) {
+        give(rest_client).post(documents_url, document_body.to_json, create_header_base) { document_server_body.to_json }
+      }
 
-    it "can create a document for a collection" do
-      expect(document.create document_id, raw_document_json).to eq document_server_body
+      it "can create a document for a collection" do
+        expect(document.create document_id, raw_document_json).to eq document_server_body
+      end
     end
   end
 
@@ -66,6 +84,7 @@ describe Azure::DocumentDB::Document do
 
     include_examples "when not supplying an indexing directive"
     include_examples "when supplying an indexing directive"
+    include_examples "when an Id exists in the document already"
   end
 
   context "When using a resource token," do
@@ -79,5 +98,6 @@ describe Azure::DocumentDB::Document do
 
     include_examples "when not supplying an indexing directive"
     include_examples "when supplying an indexing directive"
+    include_examples "when an Id exists in the document already"
   end
 end

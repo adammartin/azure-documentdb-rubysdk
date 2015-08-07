@@ -15,7 +15,10 @@ module Azure
         @INCLUDE = "Include".freeze
         @EXCLUDE = "Exclude".freeze
       end
+
+      class IdExistsError < ArgumentError; end
     end
+
     class Document
       def initialize context, rest_client, database_id, collection_id, resource_token = nil
         self.context = context
@@ -28,7 +31,7 @@ module Azure
       end
 
       def create document_id, document, indexing_directive = nil
-        body = { "id"=>document_id }.merge JSON.parse(document)
+        body = { "id"=>document_id }.merge JSON.parse(document) unless has_id_mismatch(document_id, document)
         header = header "post", collection_id
         header.merge! indexing_directive_hash(indexing_directive) if indexing_directive
         JSON.parse(rest_client.post url, body.to_json, header)
@@ -49,6 +52,12 @@ module Azure
 
       def indexing_directive_hash indexing_directive
         { "x-ms-indexing-directive" => indexing_directive }
+      end
+
+      def has_id_mismatch document_id, document
+        parsed = JSON.parse document
+        raise Documents::IdExistsError.new if parsed["id"] && parsed["id"] != document_id
+        false
       end
     end
   end

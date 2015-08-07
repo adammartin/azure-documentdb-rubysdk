@@ -62,3 +62,16 @@ Azure::DocumentDB::Documents::Indexing.EXCLUDE
 > document.create unique_document_identifier, sample, Azure::DocumentDB::Documents::Indexing.INCLUDE
 => {"id"=>"2", "key"=>"other_value", "_rid"=>"1BZ1AMBZFwACAAAAAAAAAA==", "_ts"=>1438953906, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwACAAAAAAAAAA==/", "_etag"=>""00002700-0000-0000-0000-55c4b1b20000"", "_attachments"=>"attachments/"}
 ```
+### IdExistsError
+
+When uploading a document to DocumentDB you have to specify a unique id that becomes part of the document uploaded.  The SDK will do this merge for you automatically.  However if the root element contains an "id" element and if that element does NOT match the Id you are using we have a problem.  Your supplied id does not match an already defined id in the document.  As such the SDK will throw an Azure::DocumentDB::Documents::IdExistsError that you must correct.
+
+```
+> sample = {"key"=>"other_value", "id"=>"6"}.to_json
+> document.create "5", sample
+
+Azure::DocumentDB::Documents::IdExistsError: Azure::DocumentDB::Documents::IdExistsError
+	from lib/document/document.rb:61:in `has_id_mismatch'
+	from lib/document/document.rb:34:in `create'
+        from ...
+```
