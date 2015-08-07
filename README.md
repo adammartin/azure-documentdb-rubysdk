@@ -16,6 +16,7 @@ Require the SDK
 * [User](/lib/user) - CRUD operations associated to a user.
 * [Permission](/lib/permission) - CRUD operations associated to a permission.
 * [Collection](/lib/collection) - CRUD operations associated to a collection.
+* [Document](/lib/document) - CRUD operations associated to a document.
 
 # Errors
 
