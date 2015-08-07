@@ -34,35 +34,38 @@ describe Azure::DocumentDB::Document do
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
   }
 
+  shared_examples "when supplying an indexing directive" do
+    let(:create_header_indexing) { "x-ms-indexing-directive" }
+    let(:indexing_directive) { Azure::DocumentDB::Documents::Indexing.INCLUDE }
+    let(:index_dir_hash) { { create_header_indexing => indexing_directive } }
+    let(:create_header_w_indexing) { create_header_base.merge index_dir_hash }
+
+    before(:each) {
+      give(rest_client).post(documents_url, document_body.to_json, create_header_w_indexing) { document_server_body.to_json }
+    }
+
+    it "can create a document for a collection" do
+      expect(document.create document_id, raw_document_json, indexing_directive).to eq document_server_body
+    end
+  end
+
+  shared_examples "when not supplying an indexing directive" do
+    before(:each) {
+      give(rest_client).post(documents_url, document_body.to_json, create_header_base) { document_server_body.to_json }
+    }
+
+    it "can create a document for a collection" do
+      expect(document.create document_id, raw_document_json).to eq document_server_body
+    end
+  end
+
   context "When using a master token," do
     before(:each) {
       give(secure_header).header("post", collection_rid) { create_header_base }
     }
 
-    context "when supplying no indexing directive," do
-      before(:each) {
-        give(rest_client).post(documents_url, document_body.to_json, create_header_base) { document_server_body.to_json }
-      }
-
-      it "can create a document for a collection" do
-        expect(document.create document_id, raw_document_json).to eq document_server_body
-      end
-    end
-
-    context "when supplying an indexing directive," do
-      let(:create_header_indexing) { "x-ms-indexing-directive" }
-      let(:indexing_directive) { Azure::DocumentDB::Documents::Indexing.INCLUDE }
-      let(:index_dir_hash) { { create_header_indexing => indexing_directive } }
-      let(:create_header_w_indexing) { create_header_base.merge index_dir_hash }
-
-      before(:each) {
-        give(rest_client).post(documents_url, document_body.to_json, create_header_w_indexing) { document_server_body.to_json }
-      }
-
-      it "can create a document for a collection" do
-        expect(document.create document_id, raw_document_json, indexing_directive).to eq document_server_body
-      end
-    end
+    include_examples "when not supplying an indexing directive"
+    include_examples "when supplying an indexing directive"
   end
 
   context "When using a resource token," do
@@ -74,14 +77,7 @@ describe Azure::DocumentDB::Document do
       give(resource_token).encode_header { create_header_base }
     }
 
-    context "when supplying no indexing directive," do
-      before(:each) {
-        give(rest_client).post(documents_url, document_body.to_json, create_header_base) { document_server_body.to_json }
-      }
-
-      it "can create a document for a collection" do
-        expect(document.create document_id, raw_document_json).to eq document_server_body
-      end
-    end
+    include_examples "when not supplying an indexing directive"
+    include_examples "when supplying an indexing directive"
   end
 end
