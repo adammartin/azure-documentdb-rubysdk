@@ -17,13 +17,14 @@ module Azure
       end
     end
     class Document
-      def initialize context, rest_client, database_id, collection_id
+      def initialize context, rest_client, database_id, collection_id, resource_token = nil
         self.context = context
         self.rest_client = rest_client
         self.resource_type = "docs"
         self.secure_header = Azure::DocumentDB::SecureHeader.new context.master_token, resource_type
         self.database_id = database_id
         self.collection_id = collection_id
+        self.resource_token = resource_token
       end
 
       def create document_id, document, indexing_directive = nil
@@ -34,14 +35,14 @@ module Azure
       end
 
       private
-      attr_accessor :context, :rest_client, :resource_type, :secure_header, :database_id, :collection_id
+      attr_accessor :context, :rest_client, :resource_type, :secure_header, :database_id, :collection_id, :resource_token
 
       def url resource_id = nil
         target = "/" + resource_id if resource_id
         "#{context.endpoint}/dbs/#{database_id}/colls/#{collection_id}/#{resource_type}#{target}"
       end
 
-      def header verb, resource_id, resource_token = nil
+      def header verb, resource_id
         return secure_header.header verb, resource_id unless resource_token
         resource_token.encode_header
       end

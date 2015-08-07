@@ -5,6 +5,9 @@ User provides the functionality described in the [MSDN DocumentDB Database REST 
 # Example usage
 
 ## Instantiation of a document object
+
+### Using a master key:
+
 ```
 > require 'documentdb'
 >
@@ -18,6 +21,23 @@ User provides the functionality described in the [MSDN DocumentDB Database REST 
 > db_instance_id = db_instance["_rid"]
 > collection.list db_instance_id
 > document = Azure::DocumentDB::Document.new context, RestClient, db_instance_id, collection_id
+```
+### Using resource token
+
+```
+> require 'documentdb'
+>
+> url_endpoint = ... # your url address
+> master_key = ... # your master_key
+> resource_token = ... # your user's resource_token object retrieved from a permission for this collection
+>
+> context = Azure::DocumentDB::Context.new url_endpoint, master_key
+> database = Azure::DocumentDB::Database.new context, RestClient
+> collection = Azure::DocumentDB::Collection.new context, RestClient
+> db_instance = database.list["Databases"][0] # or you can use get if you know the exact _rid
+> db_instance_id = db_instance["_rid"]
+> collection.list db_instance_id
+> document = Azure::DocumentDB::Document.new context, RestClient, db_instance_id, collection_id, resource_token
 ```
 
 ## Create a document

@@ -64,4 +64,24 @@ describe Azure::DocumentDB::Document do
       end
     end
   end
+
+  context "When using a resource token," do
+    let(:resource_token) { gimme(Azure::DocumentDB::ResourceToken) }
+    let(:resource_header) { "resource_header" }
+    let(:document) { Azure::DocumentDB::Document.new context, rest_client, database_id, collection_rid, resource_token }
+
+    before(:each) {
+      give(resource_token).encode_header { create_header_base }
+    }
+
+    context "when supplying no indexing directive," do
+      before(:each) {
+        give(rest_client).post(documents_url, document_body.to_json, create_header_base) { document_server_body.to_json }
+      }
+
+      it "can create a document for a collection" do
+        expect(document.create document_id, raw_document_json).to eq document_server_body
+      end
+    end
+  end
 end
