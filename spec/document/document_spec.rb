@@ -22,9 +22,13 @@ describe Azure::DocumentDB::Document do
   let(:create_header_base) { {"secure_create"=>"header_example"}.clone }
   let(:document_id) { "sample_name_identifier" }
   let(:raw_document) { { "key" => "value" } }
+  let(:raw_new_document) { { "key" => "new_value" } }
   let(:raw_document_json) { raw_document.to_json }
+  let(:raw_new_document_json) { raw_new_document.to_json }
   let(:document_body) { {"id"=>document_id}.merge raw_document }
+  let(:document_new_body) { document_body.merge raw_new_document }
   let(:document_server_body) { { "_rid" => document_rid }.merge document_body }
+  let(:document_new_server_body) { document_server_body.merge document_new_body }
   let(:document_list) { { "_rid"=>document_list_rid, "Documents"=>[document_server_body] } }
 
   let(:document) { Azure::DocumentDB::Document.new context, rest_client, database_id, collection_rid }
@@ -44,10 +48,32 @@ describe Azure::DocumentDB::Document do
 
       before(:each) {
         give(rest_client).post(documents_url, document_body.to_json, create_header_w_indexing) { document_server_body.to_json }
+        give(rest_client).put(document_url, document_new_body.to_json, create_header_w_indexing) { document_new_server_body.to_json }
       }
 
       it "can create a document for a collection" do
         expect(document.create document_id, raw_document_json, indexing_directive).to eq document_server_body
+      end
+
+      it "can replace a document for a collection" do
+        expect(document.replace document_rid, document_id, raw_new_document_json, indexing_directive).to eq document_new_server_body
+      end
+    end
+  end
+
+  shared_examples "when not supplying an indexing directive" do
+    context "when not supplying an indexing directive" do
+      before(:each) {
+        give(rest_client).post(documents_url, document_body.to_json, create_header_base) { document_server_body.to_json }
+        give(rest_client).put(document_url, document_new_body.to_json, create_header_base) { document_new_server_body.to_json }
+      }
+
+      it "can create a document for a collection" do
+        expect(document.create document_id, raw_document_json).to eq document_server_body
+      end
+
+      it "can replace a document for a collection" do
+        expect(document.replace document_rid, document_id, raw_new_document_json).to eq document_new_server_body
       end
     end
   end
@@ -69,18 +95,6 @@ describe Azure::DocumentDB::Document do
     end
   end
 
-  shared_examples "when not supplying an indexing directive" do
-    context "when not supplying an indexing directive" do
-      before(:each) {
-        give(rest_client).post(documents_url, document_body.to_json, create_header_base) { document_server_body.to_json }
-      }
-
-      it "can create a document for a collection" do
-        expect(document.create document_id, raw_document_json).to eq document_server_body
-      end
-    end
-  end
-
   shared_examples "basic list, get, delete functionality" do
     it "can list the existing documents" do
       expect(document.list).to eq document_list
@@ -97,6 +111,7 @@ describe Azure::DocumentDB::Document do
 
     before(:each) {
       give(secure_header).header("post", collection_rid) { create_header_base }
+      give(secure_header).header("put", document_rid) { create_header_base }
       give(secure_header).header("get", collection_rid) { list_header }
       give(secure_header).header("get", document_rid) { get_header }
       give(rest_client).get(documents_url, list_header) { document_list.to_json }

@@ -31,10 +31,16 @@ module Azure
       end
 
       def create document_id, document, indexing_directive = nil
-        body = { "id"=>document_id }.merge JSON.parse(document) unless has_id_mismatch(document_id, document)
-        header = header "post", collection_id
-        header.merge! indexing_directive_hash(indexing_directive) if indexing_directive
+        body = document_body document_id, document
+        header = indexing_header "post", collection_id, indexing_directive
         JSON.parse(rest_client.post url, body.to_json, header)
+      end
+
+      def replace document_rid, document_id, document, indexing_directive = nil
+        url = url document_rid
+        body = document_body document_id, document
+        header = indexing_header "put", document_rid, indexing_directive
+        JSON.parse(rest_client.put url, body.to_json, header)
       end
 
       def list
@@ -69,6 +75,16 @@ module Azure
         parsed = JSON.parse document
         raise Documents::IdExistsError.new if parsed["id"] && parsed["id"] != document_id
         false
+      end
+
+      def document_body document_id, document
+        { "id"=>document_id }.merge JSON.parse(document) unless has_id_mismatch(document_id, document)
+      end
+
+      def indexing_header verb, id, indexing_directive
+        header = header verb, id
+        header.merge! indexing_directive_hash(indexing_directive) if indexing_directive
+        header
       end
     end
   end

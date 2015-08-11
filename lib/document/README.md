@@ -36,7 +36,7 @@ User provides the functionality described in the [MSDN DocumentDB Database REST 
 > collection = Azure::DocumentDB::Collection.new context, RestClient
 > db_instance = database.list["Databases"][0] # or you can use get if you know the exact _rid
 > db_instance_id = db_instance["_rid"]
-> collection.list db_instance_id
+> collection_id = collection.list(db_instance_id)["DocumentCollections"][0]["_rid"]
 > document = Azure::DocumentDB::Document.new context, RestClient, db_instance_id, collection_id, resource_token
 ```
 
@@ -90,4 +90,24 @@ Azure::DocumentDB::Documents::IdExistsError: Azure::DocumentDB::Documents::IdExi
 > document.get document_rid
 
 => {"id"=>"1", "key"=>"value", "_rid"=>"1BZ1AMBZFwABAAAAAAAAAA==", "_ts"=>1438895651, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwABAAAAAAAAAA==/", "_etag"=>""00002100-0000-0000-0000-55c3ce230000"", "_attachments"=>"attachments/"}
+```
+
+## Replace a Document
+
+### Without an indexing policy
+```
+> document_rid = "1BZ1AMBZFwAFAAAAAAAAAA=="
+> sample = {"key"=>"new_other_value", "id"=>"5"}.to_json
+> document.replace document_rid, "5", sample
+
+=> {"id"=>"5", "key"=>"new_other_value", "_rid"=>"1BZ1AMBZFwAFAAAAAAAAAA==", "_ts"=>1439306014, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwAFAAAAAAAAAA==/", "_etag"=>""00006103-0000-0000-0000-55ca111e0000"", "_attachments"=>"attachments/"}
+```
+
+### With an indexing policy
+```
+> indexing_policy = Azure::DocumentDB::Documents::Indexing.INCLUDE
+> sample = {"key"=>"another_new_other_value", "id"=>"5"}.to_json
+> document.replace document_rid, "5", sample, indexing_policy
+
+=> {"id"=>"5", "key"=>"another_new_other_value", "_rid"=>"1BZ1AMBZFwAFAAAAAAAAAA==", "_ts"=>1439307000, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwAFAAAAAAAAAA==/", "_etag"=>""00006403-0000-0000-0000-55ca14f80000"", "_attachments"=>"attachments/"}
 ```
