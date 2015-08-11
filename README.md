@@ -17,6 +17,7 @@ Require the SDK
 * [Permission](/lib/permission) - CRUD operations associated to a permission.
 * [Collection](/lib/collection) - CRUD operations associated to a collection.
 * [Document](/lib/document) - CRUD operations associated to a document.
+* [Offer](/lib/offer) - CRUD operations associated to an offer.
 
 # Master Key vs Resource Token
 

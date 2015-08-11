@@ -31,7 +31,3 @@ Offer provides the functionality described in the [MSDN DocumentDB Database REST
 ## Replace Offer - PENDING
 ```
 ```
-
-## Querying Offers - PENDING
-```
-```
