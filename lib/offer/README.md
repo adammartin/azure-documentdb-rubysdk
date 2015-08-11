@@ -28,6 +28,12 @@ Offer provides the functionality described in the [MSDN DocumentDB Database REST
 => {"offerType"=>"S1", "resource"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "offerResourceId"=>"1BZ1AMBZFwA=", "id"=>"qKcE", "_rid"=>"qKcE", "_ts"=>1430919012, "_self"=>"offers/qKcE/", "_etag"=>""00000200-0000-0000-0000-554a17640000""}
 ```
 
-## Replace Offer - PENDING
+## Replace Offer
+> _NOTE:_ this feature has not been integrated tested yet.  If you use it please let me know that it is working as intended or report any bugs
+
 ```
+=> new_offer_record =  {"offerType"=>"S2", "resource"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "offerResourceId"=>"1BZ1AMBZFwA=", "id"=>"qKcE", "_rid"=>"qKcE" }
+> offer.replace offer_id, new_offer_record
+
+=> {"offerType"=>"S1", "resource"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "offerResourceId"=>"1BZ1AMBZFwA=", "id"=>"qKcE", "_rid"=>"qKcE", "_ts"=>1430919012, "_self"=>"offers/qKcE/", "_etag"=>""00000200-0000-0000-0000-554a17640000""}
 ```

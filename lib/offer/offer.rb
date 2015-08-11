@@ -22,6 +22,12 @@ module Azure
         JSON.parse(rest_client.get url, header)
       end
 
+      def replace offer_id, new_offer
+        url = url offer_id
+        header = secure_header.header "put", offer_id
+        JSON.parse(rest_client.put url, new_offer, header)
+      end
+
       private
       attr_accessor :context, :rest_client, :resource_type, :secure_header
 
