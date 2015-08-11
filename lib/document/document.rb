@@ -38,7 +38,7 @@ module Azure
       end
 
       def list
-        header = secure_header.header "get", collection_id
+        header = header "get", collection_id
         JSON.parse(rest_client.get url, header)
       end
 

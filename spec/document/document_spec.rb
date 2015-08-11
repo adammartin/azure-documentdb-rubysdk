@@ -108,10 +108,12 @@ describe Azure::DocumentDB::Document do
 
     before(:each) {
       give(resource_token).encode_header { create_header_base }
+      give(rest_client).get(documents_url, create_header_base) { document_list.to_json }
     }
 
     include_examples "when not supplying an indexing directive"
     include_examples "when supplying an indexing directive"
     include_examples "when an Id exists in the document already"
+    include_examples "basic list, get, delete functionality"
   end
 end
