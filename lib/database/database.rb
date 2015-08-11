@@ -1,5 +1,6 @@
 require 'json'
 require 'time'
+require_relative '../context'
 require_relative '../header/secure_header'
 
 module Azure
@@ -8,7 +9,7 @@ module Azure
       def initialize context, rest_client
         self.context = context
         self.rest_client = rest_client
-        self.resource_type = "dbs"
+        self.resource_type = Azure::DocumentDB::ResourceType.DATABASE
         self.secure_header = Azure::DocumentDB::SecureHeader.new context.master_token, resource_type
       end
 
