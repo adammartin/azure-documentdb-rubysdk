@@ -14,6 +14,7 @@ describe Azure::DocumentDB::Document do
   let(:document_list_rid) { "doc_list_rid" }
   let(:collection_resource) { "dbs/#{database_id}/colls/#{collection_rid}" }
   let(:documents_url) { "#{url}/#{collection_resource}/#{resource_type}" }
+  let(:document_url) { "#{documents_url}/#{document_rid}" }
   let(:rest_client) { gimme }
   let(:context) { gimme(Azure::DocumentDB::Context) }
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
@@ -84,15 +85,22 @@ describe Azure::DocumentDB::Document do
     it "can list the existing documents" do
       expect(document.list).to eq document_list
     end
+
+    it "can get a document" do
+      expect(document.get document_rid).to eq document_server_body
+    end
   end
 
   context "When using a master token," do
     let(:list_header) { "list_header" }
+    let(:get_header) { "get_header" }
 
     before(:each) {
       give(secure_header).header("post", collection_rid) { create_header_base }
       give(secure_header).header("get", collection_rid) { list_header }
+      give(secure_header).header("get", document_rid) { get_header }
       give(rest_client).get(documents_url, list_header) { document_list.to_json }
+      give(rest_client).get(document_url, get_header) { document_server_body.to_json }
     }
 
     include_examples "when not supplying an indexing directive"
@@ -109,6 +117,7 @@ describe Azure::DocumentDB::Document do
     before(:each) {
       give(resource_token).encode_header { create_header_base }
       give(rest_client).get(documents_url, create_header_base) { document_list.to_json }
+      give(rest_client).get(document_url, create_header_base) { document_server_body.to_json }
     }
 
     include_examples "when not supplying an indexing directive"

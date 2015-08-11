@@ -42,6 +42,12 @@ module Azure
         JSON.parse(rest_client.get url, header)
       end
 
+      def get document_rid
+        url = url document_rid
+        header = header "get", document_rid
+        JSON.parse(rest_client.get url, header)
+      end
+
       private
       attr_accessor :context, :rest_client, :resource_type, :secure_header, :database_id, :collection_id, :resource_token
 

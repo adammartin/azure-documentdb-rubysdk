@@ -82,3 +82,12 @@ Azure::DocumentDB::Documents::IdExistsError: Azure::DocumentDB::Documents::IdExi
 > document.list
 => {"_rid"=>"1BZ1AMBZFwA=", "Documents"=>[{"id"=>"1", "key"=>"value", "_rid"=>"1BZ1AMBZFwABAAAAAAAAAA==", "_ts"=>1438895651, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwABAAAAAAAAAA==/", "_etag"=>""00002100-0000-0000-0000-55c3ce230000"", "_attachments"=>"attachments/"}, {"id"=>"2", "key"=>"other_value", "_rid"=>"1BZ1AMBZFwACAAAAAAAAAA==", "_ts"=>1438953906, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwACAAAAAAAAAA==/", "_etag"=>""00002700-0000-0000-0000-55c4b1b20000"", "_attachments"=>"attachments/"}, {"id"=>"3", "key"=>"a_third_value", "_rid"=>"1BZ1AMBZFwADAAAAAAAAAA==", "_ts"=>1438960856, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwADAAAAAAAAAA==/", "_etag"=>""00002800-0000-0000-0000-55c4ccd80000"", "_attachments"=>"attachments/"}, {"id"=>"4", "key"=>"other_value", "_rid"=>"1BZ1AMBZFwAEAAAAAAAAAA==", "_ts"=>1438978257, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwAEAAAAAAAAAA==/", "_etag"=>""00004200-0000-0000-0000-55c510d10000"", "_attachments"=>"attachments/"}, {"id"=>"5", "key"=>"other_value", "_rid"=>"1BZ1AMBZFwAFAAAAAAAAAA==", "_ts"=>1438978376, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwAFAAAAAAAAAA==/", "_etag"=>""00004300-0000-0000-0000-55c511480000"", "_attachments"=>"attachments/"}], "_count"=>5}
 ```
+
+## Get a Document using it's id
+
+```
+> document_rid = "1BZ1AMBZFwABAAAAAAAAAA=="
+> document.get document_rid
+
+=> {"id"=>"1", "key"=>"value", "_rid"=>"1BZ1AMBZFwABAAAAAAAAAA==", "_ts"=>1438895651, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwABAAAAAAAAAA==/", "_etag"=>""00002100-0000-0000-0000-55c3ce230000"", "_attachments"=>"attachments/"}
+```
