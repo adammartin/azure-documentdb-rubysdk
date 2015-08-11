@@ -95,7 +95,7 @@ describe Azure::DocumentDB::Document do
     end
   end
 
-  shared_examples "basic list, get, delete functionality" do
+  shared_examples "basic list and get functionality" do
     it "can list the existing documents" do
       expect(document.list).to eq document_list
     end
@@ -108,12 +108,14 @@ describe Azure::DocumentDB::Document do
   context "When using a master token," do
     let(:list_header) { "list_header" }
     let(:get_header) { "get_header" }
+    let(:delete_header) { "delete_header" }
 
     before(:each) {
       give(secure_header).header("post", collection_rid) { create_header_base }
       give(secure_header).header("put", document_rid) { create_header_base }
       give(secure_header).header("get", collection_rid) { list_header }
       give(secure_header).header("get", document_rid) { get_header }
+      give(secure_header).header("delete", document_rid) { delete_header }
       give(rest_client).get(documents_url, list_header) { document_list.to_json }
       give(rest_client).get(document_url, get_header) { document_server_body.to_json }
     }
@@ -121,7 +123,12 @@ describe Azure::DocumentDB::Document do
     include_examples "when not supplying an indexing directive"
     include_examples "when supplying an indexing directive"
     include_examples "when an Id exists in the document already"
-    include_examples "basic list, get, delete functionality"
+    include_examples "basic list and get functionality"
+
+    it "can delete an existing document" do
+      document.delete document_rid
+      verify(rest_client).delete(document_url, delete_header)
+    end
   end
 
   context "When using a resource token," do
@@ -138,6 +145,11 @@ describe Azure::DocumentDB::Document do
     include_examples "when not supplying an indexing directive"
     include_examples "when supplying an indexing directive"
     include_examples "when an Id exists in the document already"
-    include_examples "basic list, get, delete functionality"
+    include_examples "basic list and get functionality"
+
+    it "can delete an existing document" do
+      document.delete document_rid
+      verify(rest_client).delete(document_url, create_header_base)
+    end
   end
 end

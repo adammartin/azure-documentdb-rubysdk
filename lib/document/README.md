@@ -111,3 +111,11 @@ Azure::DocumentDB::Documents::IdExistsError: Azure::DocumentDB::Documents::IdExi
 
 => {"id"=>"5", "key"=>"another_new_other_value", "_rid"=>"1BZ1AMBZFwAFAAAAAAAAAA==", "_ts"=>1439307000, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwAFAAAAAAAAAA==/", "_etag"=>""00006403-0000-0000-0000-55ca14f80000"", "_attachments"=>"attachments/"}
 ```
+
+## Delete a Document
+```
+> document_rid = "1BZ1AMBZFwAFAAAAAAAAAA=="
+> document.delete document_rid
+
+=> ""
+```

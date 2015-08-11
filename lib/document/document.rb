@@ -54,6 +54,12 @@ module Azure
         JSON.parse(rest_client.get url, header)
       end
 
+      def delete document_rid
+        url = url document_rid
+        header = header "delete", document_rid
+        rest_client.delete url, header
+      end
+
       private
       attr_accessor :context, :rest_client, :resource_type, :secure_header, :database_id, :collection_id, :resource_token
 
