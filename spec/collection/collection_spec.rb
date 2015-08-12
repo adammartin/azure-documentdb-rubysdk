@@ -105,5 +105,4 @@ describe Azure::DocumentDB::Collection do
       verify(rest_client).delete target_coll_url, resource_header
     end
   end
-
 end
