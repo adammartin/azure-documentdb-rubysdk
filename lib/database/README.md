@@ -11,7 +11,7 @@ Database provides functionality described in the [MSDN DocumentDB Database REST 
 > url_endpoint = ... # your url address
 > master_key = ... # your master_key
 >
-> context = Azure::DocumentDB::Context.new url_endpoint, master_keys
+> context = Azure::DocumentDB::Context.new url_endpoint, master_key
 > database = Azure::DocumentDB::Database.new context, RestClient
 ```
 
@@ -38,4 +38,10 @@ Database provides functionality described in the [MSDN DocumentDB Database REST 
 ## Delete a Document Database
 ```
 > database.delete "fn4ZAA=="
+```
+
+## Get uri of the Document Database
+```
+> database.uri
+=> "https://[your uri of your document db instance]/dbs"
 ```

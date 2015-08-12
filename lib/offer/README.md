@@ -37,3 +37,9 @@ Offer provides the functionality described in the [MSDN DocumentDB Database REST
 
 => {"offerType"=>"S1", "resource"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "offerResourceId"=>"1BZ1AMBZFwA=", "id"=>"qKcE", "_rid"=>"qKcE", "_ts"=>1430919012, "_self"=>"offers/qKcE/", "_etag"=>""00000200-0000-0000-0000-554a17640000""}
 ```
+
+## Get URI of the Offer resource
+```
+> offer.uri
+=> "https://[uri of your documentdb instance]/offers"
+```

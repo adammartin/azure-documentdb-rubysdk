@@ -56,4 +56,8 @@ describe Azure::DocumentDB::Database do
   it "can get a supplied database" do
     expect(database.get database_id).to eq get_response
   end
+
+  it "can get the uri of the database resource" do
+    expect(database.uri).to eq dbs_url
+  end
 end

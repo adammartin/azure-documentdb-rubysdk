@@ -47,7 +47,7 @@ describe Azure::DocumentDB::Permission do
 
   let(:delete_header) { "delete_header" }
 
-  let(:permission) { Azure::DocumentDB::Permission.new context, rest_client }
+  let(:permission) { Azure::DocumentDB::Permission.new context, rest_client, database_id, user_id }
 
   before(:each) {
     give(context).master_token { master_token }
@@ -68,27 +68,31 @@ describe Azure::DocumentDB::Permission do
   }
 
   it "can list the existing permissions for a database for a given user" do
-    expect(permission.list database_id, user_id).to eq list_result
+    expect(permission.list).to eq list_result
   end
 
   it "can create a new permission for a given user on a database" do
-    expect(permission.create database_id, user_id, create_permission).to eq permission_record
+    expect(permission.create create_permission).to eq permission_record
   end
 
   it "can get a permission for a given user on a database" do
-    expect(permission.get database_id, user_id, perm_rid).to eq permission_record
+    expect(permission.get perm_rid).to eq permission_record
   end
 
   it "can get a resource_token for a given user on a database" do
-    expect(permission.resource_token database_id, user_id, perm_rid).to eq resource_token
+    expect(permission.resource_token perm_rid).to eq resource_token
   end
 
   it "can replace an existing permission for a given user on a database" do
-    expect(permission.replace database_id, user_id, perm_rid, replace_permission).to eq updated_perm_record
+    expect(permission.replace perm_rid, replace_permission).to eq updated_perm_record
   end
 
   it "can delete an existing permission for a given user on a database" do
-    permission.delete database_id, user_id, perm_rid
+    permission.delete perm_rid
     verify(rest_client).delete permission_url, delete_header
+  end
+
+  it "can get the uri of the permission resource" do
+    expect(permission.uri).to eq permission_list_url
   end
 end

@@ -47,4 +47,8 @@ describe Azure::DocumentDB::Offer do
   it "can replace an offer" do
     expect(offer.replace offer_id, new_offer_record.to_json).to eq new_offer_record
   end
+
+  it "can get the uri of the offer resource" do
+    expect(offer.uri).to eq offers_url
+  end
 end

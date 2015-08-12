@@ -16,10 +16,10 @@ User provides the functionality described in the [MSDN DocumentDB Database REST 
 >
 > context = Azure::DocumentDB::Context.new url_endpoint, master_key
 > database = Azure::DocumentDB::Database.new context, RestClient
-> collection = Azure::DocumentDB::Collection.new context, RestClient
 > db_instance = database.list["Databases"][0] # or you can use get if you know the exact _rid
 > db_instance_id = db_instance["_rid"]
-> collection.list db_instance_id
+> collection = Azure::DocumentDB::Collection.new context, RestClient, db_instance_id
+> collection.list
 > document = Azure::DocumentDB::Document.new context, RestClient, db_instance_id, collection_id
 ```
 ### Using resource token
@@ -33,10 +33,10 @@ User provides the functionality described in the [MSDN DocumentDB Database REST 
 >
 > context = Azure::DocumentDB::Context.new url_endpoint, master_key
 > database = Azure::DocumentDB::Database.new context, RestClient
-> collection = Azure::DocumentDB::Collection.new context, RestClient
 > db_instance = database.list["Databases"][0] # or you can use get if you know the exact _rid
 > db_instance_id = db_instance["_rid"]
-> collection_id = collection.list(db_instance_id)["DocumentCollections"][0]["_rid"]
+> collection = Azure::DocumentDB::Collection.new context, RestClient, db_instance_id
+> collection_id = collection.list["DocumentCollections"][0]["_rid"]
 > document = Azure::DocumentDB::Document.new context, RestClient, db_instance_id, collection_id, resource_token
 ```
 
@@ -118,4 +118,10 @@ Azure::DocumentDB::Documents::IdExistsError: Azure::DocumentDB::Documents::IdExi
 > document.delete document_rid
 
 => ""
+```
+
+## Get uri of the Document resource
+```
+> document.uri
+=> "https://[uri of your documentdb instance]/dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs"
 ```

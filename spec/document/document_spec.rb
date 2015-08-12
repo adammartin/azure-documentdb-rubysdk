@@ -151,5 +151,9 @@ describe Azure::DocumentDB::Document do
       document.delete document_rid
       verify(rest_client).delete(document_url, create_header_base)
     end
+
+    it "can give the uri of the document resource" do
+      expect(document.uri).to eq documents_url
+    end
   end
 end

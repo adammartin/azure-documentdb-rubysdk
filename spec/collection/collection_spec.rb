@@ -27,7 +27,7 @@ describe Azure::DocumentDB::Collection do
 
   let(:create_body) { { "id" => coll_name } }
 
-  let(:collection) { Azure::DocumentDB::Collection.new context, rest_client }
+  let(:collection) { Azure::DocumentDB::Collection.new context, rest_client, database_id }
 
   before(:each) {
     give(context).master_token { master_token }
@@ -52,11 +52,15 @@ describe Azure::DocumentDB::Collection do
     }
 
     it "can list the existing collections for a database" do
-      expect(collection.list database_id).to eq list_result
+      expect(collection.list).to eq list_result
     end
 
     it "can create a new collection in a database" do
-      expect(collection.create database_id, coll_name).to eq coll_record
+      expect(collection.create coll_name).to eq coll_record
+    end
+
+    it "can give the uri of the resource" do
+      expect(collection.uri).to eq full_coll_url
     end
 
     context "When a custom policy is used" do
@@ -68,16 +72,16 @@ describe Azure::DocumentDB::Collection do
       }
 
       it "can create a new collection in a database" do
-        expect(collection.create database_id, coll_name, policy).to eq coll_record
+        expect(collection.create coll_name, policy).to eq coll_record
       end
     end
 
     it "can get a collection" do
-      expect(collection.get database_id, coll_id).to eq coll_record
+      expect(collection.get coll_id).to eq coll_record
     end
 
     it "can delete a collection" do
-      collection.delete database_id, coll_id
+      collection.delete coll_id
       verify(rest_client).delete target_coll_url, delete_header
     end
   end
@@ -93,15 +97,15 @@ describe Azure::DocumentDB::Collection do
     }
 
     it "Can list the existing collections for a database associated" do
-      expect(collection.list database_id, resource_token).to eq list_result
+      expect(collection.list resource_token).to eq list_result
     end
 
     it "can get a collection" do
-      expect(collection.get database_id, coll_id, resource_token).to eq coll_record
+      expect(collection.get coll_id, resource_token).to eq coll_record
     end
 
     it "can delete a collection" do
-      collection.delete database_id, coll_id, resource_token
+      collection.delete coll_id, resource_token
       verify(rest_client).delete target_coll_url, resource_header
     end
   end

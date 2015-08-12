@@ -60,6 +60,10 @@ module Azure
         rest_client.delete url, header
       end
 
+      def uri
+        url
+      end
+
       private
       attr_accessor :context, :rest_client, :resource_type, :secure_header, :database_id, :collection_id, :resource_token
 

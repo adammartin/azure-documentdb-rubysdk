@@ -13,9 +13,9 @@ Database provides functionality described in the [MSDN DocumentDB Database REST 
 >
 > context = Azure::DocumentDB::Context.new url_endpoint, master_keys
 > database = Azure::DocumentDB::Database.new context, RestClient
-> collection = Azure::DocumentDB::Collection.new context, RestClient
 > db_instance = database.list["Databases"][0] # or you can use get if you know the exact _rid
 > db_instance_id = db_instance["_rid"]
+> collection = Azure::DocumentDB::Collection.new context, RestClient, db_instance_id
 ```
 
 ## Instantiation of a custom Indexing Policy
@@ -38,7 +38,7 @@ Indexing is a mildly complex creature in DocumentDB.  Be sure to read and unders
 
 ## List Collections for a Database Instance
 ```
-> collection.list db_instance_id
+> collection.list
 => {"_rid"=>"1BZ1AA==", "DocumentCollections"=>[], "_count"=>0}
 ```
 
@@ -46,27 +46,27 @@ Indexing is a mildly complex creature in DocumentDB.  Be sure to read and unders
 
 With default indexing
 ```
-> collection.create db_instance_id, "sample_collection"
+> collection.create "sample_collection"
 => {"id"=>"sample_collection", "indexingPolicy"=>{"indexingMode"=>"consistent", "automatic"=>true, "IncludedPaths"=>[{"Path"=>"/", "IndexType"=>"Hash", "NumericPrecision"=>3, "StringPrecision"=>3}, {"Path"=>"/"_ts"/?", "IndexType"=>"Range", "NumericPrecision"=>6}], "ExcludedPaths"=>[]}, "_rid"=>"1BZ1AMBZFwA=", "_ts"=>1430919012, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "_etag"=>""00000100-0000-0000-0000-554a17640000"", "_docs"=>"docs/", "_sprocs"=>"sprocs/", "_triggers"=>"triggers/", "_udfs"=>"udfs/", "_conflicts"=>"conflicts/"}
 ```
 
 With custom indexing
 ```
-> collection.create db_instance_id, "sample_custom_collection", policy
+> collection.create "sample_custom_collection", policy
 => {"id"=>"sample_custom_collection", "indexingPolicy"=>{"indexingMode"=>"consistent", "automatic"=>true, "IncludedPaths"=>[{"Path"=>"/", "IndexType"=>"Hash", "NumericPrecision"=>3, "StringPrecision"=>3}, {"Path"=>"/"_ts"/?", "IndexType"=>"Range", "NumericPrecision"=>6}], "ExcludedPaths"=>[]}, "_rid"=>"1BZ1AOr7lgA=", "_ts"=>1438793238, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AOr7lgA=/", "_etag"=>""00000100-0000-0000-0000-55c23e160000"", "_docs"=>"docs/", "_sprocs"=>"sprocs/", "_triggers"=>"triggers/", "_udfs"=>"udfs/", "_conflicts"=>"conflicts/"}
 ```
 
 ## Get a Collection for a Database Instance
 ```
 > collection_id = "1BZ1AMBZFwA=" # INSERT YOUR COLLECTION ID INSTEAD THIS IS JUST AN EXAMPLE #
-> collection.get db_instance_id, collection_id
+> collection.get collection_id
 => {"id"=>"sample_collection", "indexingPolicy"=>{"indexingMode"=>"consistent", "automatic"=>true, "IncludedPaths"=>[{"Path"=>"/", "IndexType"=>"Hash", "NumericPrecision"=>3, "StringPrecision"=>3}, {"Path"=>"/"_ts"/?", "IndexType"=>"Range", "NumericPrecision"=>6}], "ExcludedPaths"=>[]}, "_rid"=>"1BZ1AMBZFwA=", "_ts"=>1430919012, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "_etag"=>""00000100-0000-0000-0000-554a17640000"", "_docs"=>"docs/", "_sprocs"=>"sprocs/", "_triggers"=>"triggers/", "_udfs"=>"udfs/", "_conflicts"=>"conflicts/"}
 ```
 
 ## Delete a Collection for a Database Instance
 ```
 > coll_to_del_rid = "1BZ1AOr7lgA="
-> collection.delete db_instance_id, coll_to_del_rid
+> collection.delete coll_to_del_rid
 ```
 
 ## Using a Resource Token
@@ -75,9 +75,18 @@ Per the documentation a resource token is allowed for list, get, and delete oper
 
 ```
 > perm_rid = # insert your permission resource id here
-> permission = Azure::DocumentDB::Permission.new context, RestClient
-> resource_token = permission.resource_token db_instance_id, user_id, perm_rid
-> collection.get db_instance_id, collection_id, resource_token
+> user = Azure::DocumentDB::User.new context, RestClient, db_instance_id
+> user_id = user.list["Users"][0]["_rid"]
+> permission = Azure::DocumentDB::Permission.new context, RestClient, db_instance_id, user_id
+> resource_token = permission.resource_token perm_rid
+> collection.get collection_id, resource_token
 
 => {"id"=>"sample_collection", "indexingPolicy"=>{"indexingMode"=>"consistent", "automatic"=>true, "IncludedPaths"=>[{"Path"=>"/", "IndexType"=>"Hash", "NumericPrecision"=>3, "StringPrecision"=>3}, {"Path"=>"/"_ts"/?", "IndexType"=>"Range", "NumericPrecision"=>6}], "ExcludedPaths"=>[]}, "_rid"=>"1BZ1AMBZFwA=", "_ts"=>1430919012, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "_etag"=>""00000100-0000-0000-0000-554a17640000"", "_docs"=>"docs/", "_sprocs"=>"sprocs/", "_triggers"=>"triggers/", "_udfs"=>"udfs/", "_conflicts"=>"conflicts/"}
+```
+
+## Get the uri of the Collection
+```
+> collection.uri
+
+=> "https://[your_uri_goes_here]/dbs/1BZ1AA==/colls"
 ```

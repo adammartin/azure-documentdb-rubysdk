@@ -29,6 +29,10 @@ module Azure
         JSON.parse(rest_client.put url, new_offer, header)
       end
 
+      def uri
+        url
+      end
+
       private
       attr_accessor :context, :rest_client, :resource_type, :secure_header
 

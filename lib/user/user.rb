@@ -5,49 +5,52 @@ require_relative '../header/secure_header'
 module Azure
   module DocumentDB
     class User
-      def initialize context, rest_client
+      def initialize context, rest_client, database_id
         self.context = context
         self.rest_client = rest_client
+        self.database_id = database_id
         self.resource_type = Azure::DocumentDB::ResourceType.USER
         self.secure_header = Azure::DocumentDB::SecureHeader.new context.master_token, resource_type
       end
 
-      def list database_id
-        url = url database_id
+      def list
         header = secure_header.header "get", database_id
         JSON.parse(rest_client.get url, header)
       end
 
-      def create database_id, user_name
-        url = url database_id
+      def create user_name
         body = { "id" => user_name }
         header = secure_header.header "post", database_id
         JSON.parse(rest_client.post url, body.to_json, header)
       end
 
-      def get database_id, user_id
-        url = url database_id, user_id
+      def get user_id
+        url = url user_id
         header = secure_header.header "get", user_id
         JSON.parse(rest_client.get url, header)
       end
 
-      def delete database_id, user_id
-        url = url database_id, user_id
+      def delete user_id
+        url = url user_id
         header = secure_header.header "delete", user_id
         rest_client.delete url, header
       end
 
-      def replace database_id, user_id, user_name
-        url = url database_id, user_id
+      def replace user_id, user_name
+        url = url user_id
         body = { "id" => user_name }
         header = secure_header.header "put", user_id
         JSON.parse(rest_client.put url, body.to_json, header)
       end
 
-      private
-      attr_accessor :context, :rest_client, :resource_type, :secure_header
+      def uri
+        url
+      end
 
-      def url database_id, resource_id = nil
+      private
+      attr_accessor :context, :rest_client, :resource_type, :secure_header, :database_id
+
+      def url resource_id = nil
         target = "/" + resource_id if resource_id
         "#{context.endpoint}/dbs/#{database_id}/#{resource_type}#{target}"
       end

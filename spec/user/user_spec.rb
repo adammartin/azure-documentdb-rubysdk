@@ -28,7 +28,7 @@ describe Azure::DocumentDB::User do
   let(:replace_body) { create_body }
   let(:replace_response) { user_record }
 
-  let(:user) { Azure::DocumentDB::User.new context, rest_client }
+  let(:user) { Azure::DocumentDB::User.new context, rest_client, database_id }
 
   before(:each) {
     give(context).master_token { master_token }
@@ -46,23 +46,27 @@ describe Azure::DocumentDB::User do
   }
 
   it "can list the existing databases" do
-    expect(user.list database_id).to eq list_result
+    expect(user.list).to eq list_result
   end
 
   it "can create a new user" do
-    expect(user.create database_id, user_name).to eq create_response
+    expect(user.create user_name).to eq create_response
   end
 
   it "can get a user" do
-    expect(user.get database_id, user_id).to eq user_record
+    expect(user.get user_id).to eq user_record
   end
 
   it "can delete a user" do
-    user.delete database_id, user_id
+    user.delete user_id
     verify(rest_client).delete target_url, delete_header
   end
 
   it "can replace a user" do
-    expect(user.replace database_id, user_id, user_name).to eq replace_response
+    expect(user.replace user_id, user_name).to eq replace_response
+  end
+
+  it "can get the uri for the user resource" do
+    expect(user.uri).to eq users_url
   end
 end
