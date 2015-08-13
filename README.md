@@ -4,7 +4,7 @@ Lacking an official ruby SDK I'm going to start building one from my use case pe
 
 # Usage
 
-GEM INSTALLATION INSTRUCTIONS WILL GO HERE
+gem install azure-documentdb-sdk
 
 Require the SDK
 
