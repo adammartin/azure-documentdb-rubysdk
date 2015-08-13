@@ -10,7 +10,7 @@ module Azure
       end
 
       def params
-        param_array.to_json
+        param_array
       end
 
       private

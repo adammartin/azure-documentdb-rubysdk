@@ -2,7 +2,7 @@ module Azure
   module DocumentDB
     class CustomQueryHeader
       def initialize
-        self.header_options = { "x-ms-date" => Time.now.httpdate, "x-ms-documentdb-isquery" => true }
+        self.header_options = { "x-ms-documentdb-isquery" => "True", "Content-Type" => "application/query+json", "Accept" => "application/json" }
       end
 
       def header raw_header

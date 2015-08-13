@@ -4,20 +4,13 @@ require 'header/custom_query_header'
 describe Azure::DocumentDB::CustomQueryHeader do
   let(:cq_header) { Azure::DocumentDB::CustomQueryHeader.new }
   let(:raw_header) { { "key1" => "value1" } }
-  let(:time) { gimme(Time) }
-  let(:http_date) { "http_date" }
   let(:max_item_count) { "x-ms-max-item-count" }
   let(:continuation) { "x-ms-continuation" }
   let(:version) { "x-ms-version" }
   let(:session_token) { "x-ms-session-token" }
   let(:enable_scan) { "x-ms-documentdb-query-enable-scan" }
   let(:max_item_count_error) { "Max items per page must be between 1 and 1000" }
-  let(:minimum_required) { raw_header.merge({ "x-ms-date" => http_date, "x-ms-documentdb-isquery" => true }) }
-
-  before(:each) {
-    give(Time).now { time }
-    give(time).httpdate { http_date }
-  }
+  let(:minimum_required) { raw_header.merge({ "x-ms-documentdb-isquery" => "True", "Content-Type" => "application/query+json", "Accept" => "application/json" }) }
 
   it "returns the raw header when supplied no additional headers" do
     expect(cq_header.header raw_header).to eq minimum_required

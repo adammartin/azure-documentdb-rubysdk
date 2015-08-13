@@ -13,7 +13,7 @@ describe Azure::DocumentDB::SecureHeader do
   let(:secure_auth_with_id) { "secure_auth_with_id" }
   let(:authorized_header) { "authorized_header" }
   let(:authorized_header_with_id) { "authorized_header_with_id" }
-  let(:default_settings) { ["User-Agent", "x-ms-version"] }
+  let(:default_settings) { ["x-ms-version"] }
   let(:secure_hash) { { "x-ms-date" => http_date, "authorization" => secure_auth } }
   let(:secure_hash_with_id) { { "x-ms-date" => http_date, "authorization" => secure_auth_with_id } }
 

@@ -31,7 +31,7 @@ describe Azure::DocumentDB::Query do
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
     give(query_params).params { params }
     give(secure_header).header("post", parent_resource_id) { raw_secure_header }
-    give(rest_client).post(uri, query_body, full_header) { response }
+    give(rest_client).post(uri, query_body.to_json, full_header) { response }
   }
 
   it "will return results of the query" do

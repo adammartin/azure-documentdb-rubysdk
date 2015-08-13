@@ -1,5 +1,5 @@
 module Azure
   module DocumentDB
-    VERSION = "0.0.1"
+    SERVICE_VERSION = "2015-04-08".freeze
   end
 end

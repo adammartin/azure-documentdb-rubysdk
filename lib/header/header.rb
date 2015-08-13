@@ -4,7 +4,7 @@ module Azure
   module DocumentDB
     class Header
       def initialize
-        self.defaults = { "User-Agent" => "rubysdk/#{Azure::DocumentDB::VERSION}", "x-ms-version" => "2014-08-21" }.freeze
+        self.defaults = { "x-ms-version" => Azure::DocumentDB::SERVICE_VERSION }.freeze
       end
 
       def generate sdk_default_headers, sdk_specific_headers = {}

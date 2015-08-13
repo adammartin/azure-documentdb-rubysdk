@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'context'
+require 'version/version'
 
 describe Azure::DocumentDB::Context do
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
@@ -20,6 +21,6 @@ describe Azure::DocumentDB::Context do
   end
 
   it "has the service version" do
-    expect(context.service_version).to eq "2014-08-21"
+    expect(context.service_version).to eq Azure::DocumentDB::SERVICE_VERSION
   end
 end

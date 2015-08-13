@@ -20,7 +20,7 @@ module Azure
         raw_header = secure_header.header "post", parent_resource_id
         header = custom_query_header.header raw_header
         request = { :query => query, :parameters => query_params.params }
-        rest_client.post(url, request, header)
+        rest_client.post(url, request.to_json, header)
       end
 
       private

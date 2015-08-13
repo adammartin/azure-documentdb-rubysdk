@@ -13,7 +13,7 @@ module Azure
         time = httpdate
         signed_auth = signed_auth time, verb, resource_id
         hash = { "x-ms-date" => time, "authorization" => signed_auth }
-        Azure::DocumentDB::Header.new.generate ["User-Agent", "x-ms-version"], hash
+        Azure::DocumentDB::Header.new.generate ["x-ms-version"], hash
       end
 
       private
