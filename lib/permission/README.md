@@ -5,23 +5,8 @@ Permission provides the functionality desrcribed in the [MSDN DocumentDB Databas
 # Example usage
 
 ## Instantiation of a Permission object
-```
-> require 'documentdb'
->
-> url_endpoint = ... # your url address
-> master_key = ... # your master_key
->
-> context = Azure::DocumentDB::Context.new url_endpoint, master_key
-> database = Azure::DocumentDB::Database.new context, RestClient
-> db_instance = database.list["Databases"][0] # or you can use get if you know the exact _rid
-> db_instance_id = db_instance["_rid"]
-> collection = Azure::DocumentDB::Collection.new context, RestClient, database_id
-> collection_id = collection.list(db_instance_id)["DocumentCollections"][0]["_rid"]
-> user = Azure::DocumentDB::User.new context, RestClient, database_id
-> user_instance = user.list(db_instance_id)["Users"][0]
-> user_id = user_instance["_rid"]
-> permission = Azure::DocumentDB::Permission.new context, RestClient, db_instance_id, user_id
-```
+
+Permission objects are created by the [Azure::DocumentDB::User object](/lib/user)
 
 ## List Permissions for a User on a Database
 ```

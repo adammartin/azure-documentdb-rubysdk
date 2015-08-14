@@ -1,5 +1,6 @@
 require 'json'
 require_relative '../context'
+require_relative '../permission/permission'
 require_relative '../header/secure_header'
 
 module Azure
@@ -43,6 +44,20 @@ module Azure
         JSON.parse(rest_client.put url, body.to_json, header)
       end
 
+      def permission_for_name user_name
+        user = (list["Users"].select do | u | u["id"] == user_name end)[0]
+        arg_error "name" unless user
+        Azure::DocumentDB::Permission.new context, rest_client, database_id, user["_rid"]
+      end
+
+      def permission_for_rid user_rid
+        begin
+          Azure::DocumentDB::Permission.new context, rest_client, database_id, user_rid if get user_rid
+        rescue
+          arg_error "resource id"
+        end
+      end
+
       def uri
         url
       end
@@ -53,6 +68,10 @@ module Azure
       def url resource_id = nil
         target = "/" + resource_id if resource_id
         "#{context.endpoint}/dbs/#{database_id}/#{resource_type}#{target}"
+      end
+
+      def arg_error reason
+        raise ArgumentError.new "User for supplied #{reason} must exist"
       end
     end
   end

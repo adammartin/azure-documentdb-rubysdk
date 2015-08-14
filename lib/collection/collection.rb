@@ -44,10 +44,18 @@ module Azure
         url
       end
 
-      def document_for_name collection_name
+      def document_for_name collection_name, resource_token = nil
         collection = (list["DocumentCollections"].select do | c | c["id"] == collection_name end)[0]
         raise ArgumentError.new "Collection for supplied name must exist" unless collection
-        Azure::DocumentDB::Document.new context, rest_client, database_id, collection["_rid"]
+        Azure::DocumentDB::Document.new context, rest_client, database_id, collection["_rid"], resource_token
+      end
+
+      def document_for_rid collection_rid, resource_token = nil
+        begin
+          Azure::DocumentDB::Document.new context, rest_client, database_id, collection_rid, resource_token if get collection_rid, resource_token
+        rescue
+          raise ArgumentError.new "Collection for supplied id must exist"
+        end
       end
 
       private

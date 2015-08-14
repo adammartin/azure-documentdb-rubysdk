@@ -4,6 +4,7 @@ require_relative '../context'
 require_relative '../header/secure_header'
 require_relative '../collection/collection'
 require_relative '../query/query'
+require_relative '../user/user'
 
 module Azure
   module DocumentDB
@@ -39,8 +40,7 @@ module Azure
       end
 
       def collection_for_name database_name
-        db_instance = (list["Databases"].select do | db | db["id"] == database_name end)[0]
-        raise ArgumentError.new "Database for supplied name must exist" unless db_instance
+        db_instance = instance_for_name database_name
         Azure::DocumentDB::Collection.new context, rest_client, db_instance["_rid"]
       end
 
@@ -48,7 +48,20 @@ module Azure
         begin
           Azure::DocumentDB::Collection.new context, rest_client, database_rid if get database_rid
         rescue
-          raise ArgumentError.new "Database for supplied resource id must exist"
+          arg_error "resource id"
+        end
+      end
+
+      def user_for_name database_name
+        db_instance = instance_for_name database_name
+        Azure::DocumentDB::User.new context, rest_client, db_instance["_rid"]
+      end
+
+      def user_for_rid database_rid
+        begin
+          Azure::DocumentDB::User.new context, rest_client, database_rid if get database_rid
+        rescue
+          arg_error "resource id"
         end
       end
 
@@ -63,9 +76,19 @@ module Azure
       private
       attr_accessor :context, :rest_client, :resource_type, :secure_header
 
+      def instance_for_name database_name
+        db_instance = (list["Databases"].select do | db | db["id"] == database_name end)[0]
+        arg_error "name"  unless db_instance
+        db_instance
+      end
+
       def url resource_id = nil
         target = "/" + resource_id if resource_id
         "#{context.endpoint}/#{resource_type}#{target}"
+      end
+
+      def arg_error reason
+        raise ArgumentError.new "Database for supplied #{reason} must exist"
       end
     end
   end

@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'database/database'
 require 'collection/collection'
 require 'query/query'
+require 'user/user'
 
 describe Azure::DocumentDB::Database do
   let(:url) { "our_url" }
@@ -13,6 +14,7 @@ describe Azure::DocumentDB::Database do
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
   let(:collection) { gimme(Azure::DocumentDB::Collection) }
   let(:query) { gimme(Azure::DocumentDB::Query) }
+  let(:user) { gimme(Azure::DocumentDB::User) }
   let(:database_name) { "new_database" }
   let(:database_id) { "0EWFAA==" }
   let(:default_header) { "default_header" }
@@ -38,6 +40,7 @@ describe Azure::DocumentDB::Database do
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
     give(Azure::DocumentDB::Collection).new(context, rest_client, database_id) { collection }
     give(Azure::DocumentDB::Query).new(context, rest_client, Azure::DocumentDB::ResourceType.DATABASE, "", dbs_url) { query }
+    give(Azure::DocumentDB::User).new(context, rest_client, database_id) { user }
     give(secure_header).header("get") { default_header }
     give(secure_header).header("get", database_id) { default_header_with_signed_id }
     give(secure_header).header("post") { default_header }
@@ -72,7 +75,7 @@ describe Azure::DocumentDB::Database do
     expect(database.collection_for_name database_name).to eq collection
   end
 
-  it "throws an ArgumentError when supplied a resource name of a database that does not exist when trying to create a colleciton" do
+  it "throws an ArgumentError when supplied a resource name of a database that does not exist when trying to create a collection" do
     expect{database.collection_for_name "does_not_exist"}.to raise_error ArgumentError, "Database for supplied name must exist"
   end
 
@@ -80,8 +83,24 @@ describe Azure::DocumentDB::Database do
     expect(database.collection_for_rid database_id).to eq collection
   end
 
-  it "throws an ArgumentError when supplied a resource id of a database that does not exist when trying to create a colleciton" do
+  it "throws an ArgumentError when supplied a resource id of a database that does not exist when trying to create a collection" do
     expect{database.collection_for_rid "does_not_exist"}.to raise_error ArgumentError, "Database for supplied resource id must exist"
+  end
+
+  it "can create a user for a named database" do
+    expect(database.user_for_name database_name).to eq user
+  end
+
+  it "throws an ArgumentError when supplied a resource name of a database that does not exist when trying to create a user" do
+    expect{database.user_for_name "does_not_exist"}.to raise_error ArgumentError, "Database for supplied name must exist"
+  end
+
+  it "can create a user for the _rid of a database" do
+    expect(database.user_for_rid database_id).to eq user
+  end
+
+  it "throws an ArgumentError when supplied a resource id of a database that does not exist when trying to create a user" do
+    expect{database.user_for_rid "does_not_exist"}.to raise_error ArgumentError, "Database for supplied resource id must exist"
   end
 
   it "can create a query for the database object" do

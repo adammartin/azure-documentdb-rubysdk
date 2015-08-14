@@ -5,18 +5,8 @@ User provides the functionality described in the [MSDN DocumentDB Database REST 
 # Example usage
 
 ## Instantiation of a user object
-```
-> require 'documentdb'
->
-> url_endpoint = ... # your url address
-> master_key = ... # your master_key
->
-> context = Azure::DocumentDB::Context.new url_endpoint, master_key
-> database = Azure::DocumentDB::Database.new context, RestClient
-> db_instance = database.list["Databases"][0] # or you can use get if you know the exact _rid
-> db_instance_id = db_instance["_rid"]
-> user = Azure::DocumentDB::User.new context, RestClient, db_instance_id
-```
+
+User objects are created by the [Azure::DocumentDB::Database object](/lib/database)
 
 ## List Users for a Database Instance
 ```
@@ -51,6 +41,24 @@ user.delete "1BZ1AFzDMAA="
 >
 > user.replace original_user["_rid"], "craftsmanbob"
 => {"id"=>"craftsmanbob", "_rid"=>"1BZ1AFzDMAA=", "_ts"=>1429627578, "_self"=>"dbs/1BZ1AA==/users/1BZ1AFzDMAA=/", "_etag"=>""00000900-0000-0000-0000-553662ba0000"", "_permissions"=>"permissions/"}
+```
+
+## Create a Permission for a User
+
+You can create an Azure::DocumentDB::Permission object from a User object using `user_name` or `user_rid`
+
+### Create using a user resource id
+```
+> user_rid = user.list["Users"][0]["_rid"]
+> permission = user.permission_for_rid user_rid
+=> #<Azure::DocumentDB::Permission:0x007feb0c40ca78 @context=#<Azure::DocumentDB::Context:0x007feb0c35e978 @endpoint="https://had-test.documents.azure.com:443", @master_token=#<Azure::DocumentDB::MasterToken:0x007feb0c35e950 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, service_version"2015-04-08", rest_clientRestClient, database_id"1BZ1AA==", user_id"1BZ1AFzDMAA=", resource_type"permissions", parent_resource_type"users", secure_header#<Azure::DocumentDB::SecureHeader:0x007feb0c40ca50 @token=#<Azure::DocumentDB::MasterToken:0x007feb0c35e950 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, resource_type"permissions"
+```
+
+### Create using a user name
+```
+> user_name = user.list["Users"][0]["id"]
+> permission = user.permission_for_name user_name
+=> #<Azure::DocumentDB::Permission:0x007feb0c48e5c8 @context=#<Azure::DocumentDB::Context:0x007feb0c35e978 @endpoint="https://had-test.documents.azure.com:443", @master_token=#<Azure::DocumentDB::MasterToken:0x007feb0c35e950 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, service_version"2015-04-08", rest_clientRestClient, database_id"1BZ1AA==", user_id"1BZ1AFzDMAA=", resource_type"permissions", parent_resource_type"users", secure_header#<Azure::DocumentDB::SecureHeader:0x007feb0c48e5a0 @token=#<Azure::DocumentDB::MasterToken:0x007feb0c35e950 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, resource_type"permissions"
 ```
 
 ## Get uri for the User resource

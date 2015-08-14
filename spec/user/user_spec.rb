@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'user/user'
+require 'permission/permission'
 
 describe Azure::DocumentDB::User do
   let(:user_name) { "user_name" }
@@ -13,6 +14,7 @@ describe Azure::DocumentDB::User do
   let(:rest_client) { gimme } # We will inject module RestClient for testability
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
+  let(:permission) { gimme(Azure::DocumentDB::Permission) }
   let(:get_header) { "get_header" }
   let(:get_user_header) { "get_user_header" }
   let(:post_header) { "post_header" }
@@ -34,6 +36,7 @@ describe Azure::DocumentDB::User do
     give(context).master_token { master_token }
     give(context).endpoint { url }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
+    give(Azure::DocumentDB::Permission).new(context, rest_client, database_id, user_id) { permission }
     give(secure_header).header("get", database_id) { get_header }
     give(secure_header).header("post", database_id) { post_header }
     give(secure_header).header("get", user_id) { get_user_header }
@@ -64,6 +67,22 @@ describe Azure::DocumentDB::User do
 
   it "can replace a user" do
     expect(user.replace user_id, user_name).to eq replace_response
+  end
+
+  it "can create a permission for a named user" do
+    expect(user.permission_for_name user_name).to eq permission
+  end
+
+  it "throws an ArgumentError when supplied a resource name of a user that does not exist when trying to create a permission" do
+    expect{ user.permission_for_name "does_not_exist" }.to raise_error ArgumentError, "User for supplied name must exist"
+  end
+
+  it "can create a permission for the _rid of a user" do
+    expect(user.permission_for_rid user_id).to eq permission
+  end
+
+  it "throws an ArgumentError when supplied a resource id of a user that does not exist when trying to create a permission" do
+    expect{ user.permission_for_rid "does_not_exist" }.to raise_error ArgumentError, "User for supplied resource id must exist"
   end
 
   it "can get the uri for the user resource" do

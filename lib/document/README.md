@@ -6,6 +6,9 @@ User provides the functionality described in the [MSDN DocumentDB Database REST 
 
 ## Instantiation of a document object
 
+Document objects are created by the [Azure::DocumentDB::Collection object](/lib/collection)
+
+
 ### Using a master key:
 
 ```
