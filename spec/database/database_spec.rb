@@ -1,5 +1,7 @@
 require 'spec_helper'
 require 'database/database'
+require 'collection/collection'
+require 'query/query'
 
 describe Azure::DocumentDB::Database do
   let(:url) { "our_url" }
@@ -9,11 +11,14 @@ describe Azure::DocumentDB::Database do
   let(:rest_client) { gimme } # We will inject module RestClient for testability
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
+  let(:collection) { gimme(Azure::DocumentDB::Collection) }
+  let(:query) { gimme(Azure::DocumentDB::Query) }
   let(:database_name) { "new_database" }
   let(:database_id) { "0EWFAA==" }
   let(:default_header) { "default_header" }
   let(:default_header_with_signed_id) { "default_header_with_id" }
   let(:database1) { {"id" => database_name, "_rid" => database_id, "_ts" => 1408176196} }
+  let(:database2) { {"id" => "unimportant_other", "_rid" => "junk", "_ts" => 1408176196} }
 
   let(:list_result) { {"_rid"=>"", "Databases" => [database1], "_count" => 1 } }
 
@@ -31,6 +36,8 @@ describe Azure::DocumentDB::Database do
     give(context).endpoint { url }
     give(context).service_version { serv_version }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
+    give(Azure::DocumentDB::Collection).new(context, rest_client, database_id) { collection }
+    give(Azure::DocumentDB::Query).new(context, rest_client, Azure::DocumentDB::ResourceType.DATABASE, "", dbs_url) { query }
     give(secure_header).header("get") { default_header }
     give(secure_header).header("get", database_id) { default_header_with_signed_id }
     give(secure_header).header("post") { default_header }
@@ -59,5 +66,25 @@ describe Azure::DocumentDB::Database do
 
   it "can get the uri of the database resource" do
     expect(database.uri).to eq dbs_url
+  end
+
+  it "can create a collection for a named database" do
+    expect(database.collection_for_name database_name).to eq collection
+  end
+
+  it "throws an ArgumentError when supplied a resource name of a collection that does not exist when trying to create a colleciton" do
+    expect{database.collection_for_name "does_not_exist"}.to raise_error ArgumentError, "Database for supplied name must exist"
+  end
+
+  it "can create a collection for the _rid of a database" do
+    expect(database.collection_for_rid database_id).to eq collection
+  end
+
+  it "throws an ArgumentError when supplied a resource id of a collection that does not exist when trying to create a colleciton" do
+    expect{database.collection_for_rid "does_not_exist"}.to raise_error ArgumentError, "Database for supplied resource id must exist"
+  end
+
+  it "can create a query for the database object" do
+    expect(database.query).to eq query
   end
 end

@@ -72,3 +72,15 @@ Continuation Token | `query.continuation_token token` | `token` - the non-nil to
 Service Version    | `query.service_version version`  | `version` - version of the api service to call.
 Enable Scan        | `query.enable_scan scan_bool`    | `scan_bool` - boolean value to tell service to process query if the right index does not exist.
 Session Token      | `query.session_token token`      | `token` - session token for the request for consistency purposes
+
+### Example Usage
+```
+> string_query = "select * from docs d where d.key=@key"
+> params = Azure::DocumentDB::QueryParameter.new
+> params.add "@key", "value"
+> cq_header = Azure::DocumentDB::CustomQueryHeader.new
+> cq_header.max_items_per_page 1000
+> response = query.execute string_query, cq_header, params
+
+=> {:header=>{:cache_control=>"no-store, no-cache", :pragma=>"no-cache", :transfer_encoding=>"chunked", :content_type=>"application/json", :server=>"Microsoft-HTTPAPI/2.0", :strict_transport_security=>"max-age=31536000", :x_ms_last_state_change_utc=>"Wed, 12 Aug 2015 01:41:26.476 GMT", :x_ms_item_count=>"1", :x_ms_schemaversion=>"1.1", :x_ms_alt_content_path=>"dbs/TestDb/colls/sample_collection", :x_ms_session_token=>"13", :x_ms_request_charge=>"2.89", :x_ms_serviceversion=>"version=1.3.16.1", :x_ms_activity_id=>"d3896514-f7a7-4533-9568-93af1183c960", :set_cookie=>["x-ms-session-token=13; Domain=had-test.documents.azure.com; Path=/dbs/1BZ1AA==/colls/1BZ1AMBZFwA="], :x_ms_gatewayversion=>"version=1.3.16.1", :date=>"Fri, 14 Aug 2015 12:55:39 GMT"}, :body=>{"_rid"=>"1BZ1AMBZFwA=", "Documents"=>[{"id"=>"1", "key"=>"value", "_rid"=>"1BZ1AMBZFwABAAAAAAAAAA==", "_ts"=>1438895651, "_self"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs/1BZ1AMBZFwABAAAAAAAAAA==/", "_etag"=>""00002100-0000-0000-0000-55c3ce230000"", "_attachments"=>"attachments/"}], "_count"=>1}}
+```

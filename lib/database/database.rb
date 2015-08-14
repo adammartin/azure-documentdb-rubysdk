@@ -2,6 +2,8 @@ require 'json'
 require 'time'
 require_relative '../context'
 require_relative '../header/secure_header'
+require_relative '../collection/collection'
+require_relative '../query/query'
 
 module Azure
   module DocumentDB
@@ -34,6 +36,24 @@ module Azure
         header = secure_header.header "delete", database_id
         delete_url = url database_id
         rest_client.delete delete_url, header
+      end
+
+      def collection_for_name database_name
+        db_instance = (list["Databases"].select do | db | db["id"] == database_name end)[0]
+        raise ArgumentError.new "Database for supplied name must exist" unless db_instance
+        Azure::DocumentDB::Collection.new context, rest_client, db_instance["_rid"]
+      end
+
+      def collection_for_rid database_rid
+        begin
+          Azure::DocumentDB::Collection.new context, rest_client, database_rid if get database_rid
+        rescue
+          raise ArgumentError.new "Database for supplied resource id must exist"
+        end
+      end
+
+      def query
+        Azure::DocumentDB::Query.new context, rest_client, resource_type, "", url
       end
 
       def uri
