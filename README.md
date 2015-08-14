@@ -1,6 +1,6 @@
 # Azure DocumentDB Ruby SDK
 
-Lacking an official ruby SDK I'm going to start building one from my use case perspective.  Please help contribute and grow this project.  This project is in BETA state.  I need help with Query.  Currently there appears to be a lack of documentation of exactly how to compose the master token/key to authorize the query.  Any assistance would be greatly appreciated.
+Lacking an official ruby SDK I'm going to start building one from my use case perspective.  Please help contribute and grow this project.  This project is in BETA state.  Next round of changes should make object instantiation better.  After that I plan on making use of the Query object easier.
 
 # Usage
 
@@ -18,6 +18,7 @@ Require the SDK
 * [Collection](/lib/collection) - CRUD operations associated to a collection.
 * [Document](/lib/document) - CRUD operations associated to a document.
 * [Offer](/lib/offer) - CRUD operations associated to an offer.
+* [Query](/lib/query) - object encompassing the execution of a query on an entity.
 
 # Master Key vs Resource Token
 

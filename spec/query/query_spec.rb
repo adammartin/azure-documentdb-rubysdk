@@ -21,6 +21,9 @@ describe Azure::DocumentDB::Query do
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
   let(:response) { gimme }
+  let(:response_header) { "header" }
+  let(:response_body) { { "some_stuff" => "in json format" } }
+  let(:transformed_result) { { :header => response_header, :body => response_body } }
   let(:query_body) { { :query => query, :parameters => params } }
 
   let(:db_query) { Azure::DocumentDB::Query.new context, rest_client, resource_type, parent_resource_id, uri }
@@ -32,9 +35,11 @@ describe Azure::DocumentDB::Query do
     give(query_params).params { params }
     give(secure_header).header("post", parent_resource_id) { raw_secure_header }
     give(rest_client).post(uri, query_body.to_json, full_header) { response }
+    give(response).headers { response_header }
+    give(response).body { response_body.to_json }
   }
 
   it "will return results of the query" do
-    expect(db_query.execute query, custom_query_header, query_params).to eq response
+    expect(db_query.execute query, custom_query_header, query_params).to eq transformed_result
   end
 end

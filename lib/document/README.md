@@ -19,7 +19,7 @@ User provides the functionality described in the [MSDN DocumentDB Database REST 
 > db_instance = database.list["Databases"][0] # or you can use get if you know the exact _rid
 > db_instance_id = db_instance["_rid"]
 > collection = Azure::DocumentDB::Collection.new context, RestClient, db_instance_id
-> collection.list
+> collection_rid = collection.list["DocumentCollections"][0]["_rid"]
 > document = Azure::DocumentDB::Document.new context, RestClient, db_instance_id, collection_id
 ```
 ### Using resource token
