@@ -2,6 +2,7 @@ require 'json'
 require_relative '../context'
 require_relative '../header/secure_header'
 require_relative '../auth/resource_token'
+require_relative '../document/document'
 require_relative 'index_policy'
 
 module Azure
@@ -41,6 +42,12 @@ module Azure
 
       def uri
         url
+      end
+
+      def document_for_name collection_name
+        collection = (list["DocumentCollections"].select do | c | c["id"] == collection_name end)[0]
+        raise ArgumentError.new "Collection for supplied name must exist" unless collection
+        Azure::DocumentDB::Document.new context, rest_client, database_id, collection["_rid"]
       end
 
       private

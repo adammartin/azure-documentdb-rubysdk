@@ -72,7 +72,7 @@ describe Azure::DocumentDB::Database do
     expect(database.collection_for_name database_name).to eq collection
   end
 
-  it "throws an ArgumentError when supplied a resource name of a collection that does not exist when trying to create a colleciton" do
+  it "throws an ArgumentError when supplied a resource name of a database that does not exist when trying to create a colleciton" do
     expect{database.collection_for_name "does_not_exist"}.to raise_error ArgumentError, "Database for supplied name must exist"
   end
 
@@ -80,7 +80,7 @@ describe Azure::DocumentDB::Database do
     expect(database.collection_for_rid database_id).to eq collection
   end
 
-  it "throws an ArgumentError when supplied a resource id of a collection that does not exist when trying to create a colleciton" do
+  it "throws an ArgumentError when supplied a resource id of a database that does not exist when trying to create a colleciton" do
     expect{database.collection_for_rid "does_not_exist"}.to raise_error ArgumentError, "Database for supplied resource id must exist"
   end
 

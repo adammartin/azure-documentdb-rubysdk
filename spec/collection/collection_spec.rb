@@ -5,6 +5,7 @@ require 'auth/master_token'
 require 'auth/resource_token'
 require 'collection/collection'
 require 'collection/index_policy'
+require 'document/document'
 
 describe Azure::DocumentDB::Collection do
   let(:url) { "our_url" }
@@ -18,6 +19,7 @@ describe Azure::DocumentDB::Collection do
   let(:rest_client) { gimme }
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
+  let(:document) { gimme(Azure::DocumentDB::Document) }
   let(:coll_name) { "some_name" }
   let(:coll_id) { "HN49AMgSAwA=" }
   let(:policy_body) { "policy_body" }
@@ -49,6 +51,7 @@ describe Azure::DocumentDB::Collection do
       give(rest_client).get(full_coll_url, list_header) { list_result.to_json }
       give(rest_client).post(full_coll_url, create_body.to_json, create_header) { coll_record.to_json }
       give(rest_client).get(target_coll_url, get_coll_header) { coll_record.to_json }
+      give(Azure::DocumentDB::Document).new(context, rest_client, database_id, coll_id) { document }
     }
 
     it "can list the existing collections for a database" do
@@ -61,6 +64,14 @@ describe Azure::DocumentDB::Collection do
 
     it "can give the uri of the resource" do
       expect(collection.uri).to eq full_coll_url
+    end
+
+    it "can create a document object using a collection_name" do
+      expect(collection.document_for_name coll_name).to eq document
+    end
+
+    it "throws an ArgumentError when supplied a resource name of a collection that does not exist when trying to create a document" do
+      expect{collection.document_for_name "does_not_exist"}.to raise_error ArgumentError, "Collection for supplied name must exist"
     end
 
     context "When a custom policy is used" do
