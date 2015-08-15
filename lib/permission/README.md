@@ -63,7 +63,7 @@ Here is an example that replaces just the permission name (or "id"). You can rep
 > rep_perm = Azure::DocumentDB::PermissionDefinition.new new_perm_name, perm["permissionMode"], perm["resource"]
 > permission.replace perm_rid, rep_perm
 
-=> "id"=>"ExPermission", "permissionMode"=>"All", "resource"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=", "_rid"=>"1BZ1AFzDMABeWbGCS-8ZAA==", "_ts"=>1438711483, "_self"=>"dbs/1BZ1AA==/users/1BZ1AFzDMAA=/permissions/1BZ1AFzDMABeWbGCS-8ZAA==/", "_etag"=>""00000100-0000-0000-0000-55c0febb0000"", "_token"=>"type=resource&ver=1&sig=YYkZG3KWvs4qiSaEtIWJMQ==;OYrCdLj6j9u2ht2pvsboOs+VN2IN3eGvwdDMcXmMPevF6lh5MluQdOYR3iNj2p+GbfxTCRiSrpoxUY5Cf1mH30Nf3z4OYE+u5KlnJYWX20tr4hJ0+1TF9DnceX69ET6AEAwVwYjGRiDNIltLKretP5esxjvDANNBk4x6FybItVN1SDS3NfM5bzOq70hWoLAWEduQacbnHy1iTieir1kECIk8uFDGOOh1NMaVAH2JNLI=;"}
+=> {"id"=>"ExPermission", "permissionMode"=>"All", "resource"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=", "_rid"=>"1BZ1AFzDMABeWbGCS-8ZAA==", "_ts"=>1438711483, "_self"=>"dbs/1BZ1AA==/users/1BZ1AFzDMAA=/permissions/1BZ1AFzDMABeWbGCS-8ZAA==/", "_etag"=>""00000100-0000-0000-0000-55c0febb0000"", "_token"=>"type=resource&ver=1&sig=YYkZG3KWvs4qiSaEtIWJMQ==;OYrCdLj6j9u2ht2pvsboOs+VN2IN3eGvwdDMcXmMPevF6lh5MluQdOYR3iNj2p+GbfxTCRiSrpoxUY5Cf1mH30Nf3z4OYE+u5KlnJYWX20tr4hJ0+1TF9DnceX69ET6AEAwVwYjGRiDNIltLKretP5esxjvDANNBk4x6FybItVN1SDS3NfM5bzOq70hWoLAWEduQacbnHy1iTieir1kECIk8uFDGOOh1NMaVAH2JNLI=;"}
 ```
 
 ## Delete a Specific Permission
