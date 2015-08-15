@@ -7,4 +7,5 @@ group :development do
 	gem 'rspec'
 	gem 'gimme'
 	gem 'simplecov', :require => false
+	gem 'rake'
 end
