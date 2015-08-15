@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'user/user'
+require 'query/query'
 require 'permission/permission'
 
 describe Azure::DocumentDB::User do
@@ -15,6 +16,7 @@ describe Azure::DocumentDB::User do
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
   let(:permission) { gimme(Azure::DocumentDB::Permission) }
+  let(:query) { gimme(Azure::DocumentDB::Query) }
   let(:get_header) { "get_header" }
   let(:get_user_header) { "get_user_header" }
   let(:post_header) { "post_header" }
@@ -37,6 +39,7 @@ describe Azure::DocumentDB::User do
     give(context).endpoint { url }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
     give(Azure::DocumentDB::Permission).new(context, rest_client, database_id, user_id) { permission }
+    give(Azure::DocumentDB::Query).new(context, rest_client, Azure::DocumentDB::ResourceType.USER, database_id, users_url) { query }
     give(secure_header).header("get", database_id) { get_header }
     give(secure_header).header("post", database_id) { post_header }
     give(secure_header).header("get", user_id) { get_user_header }
@@ -87,5 +90,9 @@ describe Azure::DocumentDB::User do
 
   it "can get the uri for the user resource" do
     expect(user.uri).to eq users_url
+  end
+
+  it "can create a query for the database object" do
+    expect(user.query).to eq query
   end
 end

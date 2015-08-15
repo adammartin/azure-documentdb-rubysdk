@@ -58,6 +58,10 @@ module Azure
         end
       end
 
+      def query
+        Azure::DocumentDB::Query.new context, rest_client, resource_type, database_id, url
+      end
+
       def uri
         url
       end
