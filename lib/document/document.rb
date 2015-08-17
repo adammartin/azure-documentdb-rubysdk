@@ -23,7 +23,7 @@ module Azure
       def initialize context, rest_client, database_id, collection_id, resource_token = nil
         self.context = context
         self.rest_client = rest_client
-        self.resource_type = "docs"
+        self.resource_type = Azure::DocumentDB::ResourceType.DOCUMENT
         self.secure_header = Azure::DocumentDB::SecureHeader.new context.master_token, resource_type
         self.database_id = database_id
         self.collection_id = collection_id
@@ -58,6 +58,10 @@ module Azure
         url = url document_rid
         header = header "delete", document_rid
         rest_client.delete url, header
+      end
+
+      def query
+        Azure::DocumentDB::Query.new context, rest_client, resource_type, collection_id, url
       end
 
       def uri

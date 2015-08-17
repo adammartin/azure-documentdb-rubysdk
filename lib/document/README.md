@@ -123,6 +123,15 @@ Azure::DocumentDB::Documents::IdExistsError: Azure::DocumentDB::Documents::IdExi
 => ""
 ```
 
+## Create a Query Object
+
+You can creat a query for a document using the Document Object.  See Azure::DocumentDB::Query README.md for explination of usage
+
+```
+query = document.query
+=> #<Azure::DocumentDB::Query:0x007fa7cb0c4a48 @context=#<Azure::DocumentDB::Context:0x007fa7ca6f2790 @endpoint="https://had-test.documents.azure.com:443", @master_token=#<Azure::DocumentDB::MasterToken:0x007fa7ca6f2740 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, service_version"2015-04-08", rest_clientRestClient, resource_type"docs", secure_header#<Azure::DocumentDB::SecureHeader:0x007fa7cb0c4a20 @token=#<Azure::DocumentDB::MasterToken:0x007fa7ca6f2740 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, resource_type"docs", parent_resource_id"1BZ1AMBZFwA=", url"https://had-test.documents.azure.com:443/dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/docs"
+```
+
 ## Get uri of the Document resource
 ```
 > document.uri

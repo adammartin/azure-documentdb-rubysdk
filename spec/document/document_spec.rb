@@ -7,7 +7,7 @@ require 'auth/resource_token'
 
 describe Azure::DocumentDB::Document do
   let(:url) { "our_url" }
-  let(:resource_type) { "docs" }
+  let(:resource_type) { Azure::DocumentDB::ResourceType.DOCUMENT }
   let(:database_id) { "dbs_rid" }
   let(:collection_rid) { "coll_rid" }
   let(:document_rid) { "doc_rid" }
@@ -19,6 +19,7 @@ describe Azure::DocumentDB::Document do
   let(:context) { gimme(Azure::DocumentDB::Context) }
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
+  let(:query) { gimme(Azure::DocumentDB::Query) }
   let(:create_header_base) { {"secure_create"=>"header_example"}.clone }
   let(:document_id) { "sample_name_identifier" }
   let(:raw_document) { { "key" => "value" } }
@@ -37,6 +38,7 @@ describe Azure::DocumentDB::Document do
     give(context).master_token { master_token }
     give(context).endpoint { url }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
+    give(Azure::DocumentDB::Query).new(context, rest_client, Azure::DocumentDB::ResourceType.DOCUMENT, collection_rid, documents_url) { query }
   }
 
   shared_examples "when supplying an indexing directive" do
@@ -103,6 +105,10 @@ describe Azure::DocumentDB::Document do
     it "can get a document" do
       expect(document.get document_rid).to eq document_server_body
     end
+  end
+
+  it "can create a query" do
+    expect(document.query).to eq query
   end
 
   context "When using a master token," do

@@ -108,7 +108,7 @@ You can create an Azure::DocumentDB::Document object from the Collection object 
 
 ## Create a Query Object
 
-You can create a query for a colleciton using the Collection Object.  See Azure::DocumentDB::Query README.md for explination of usage
+You can create a query for a collection using the Collection Object.  See Azure::DocumentDB::Query README.md for explination of usage
 
 ```
 query = collection.query
