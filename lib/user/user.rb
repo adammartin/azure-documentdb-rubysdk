@@ -1,5 +1,6 @@
 require 'json'
 require_relative '../context'
+require_relative '../query/query'
 require_relative '../permission/permission'
 require_relative '../header/secure_header'
 

@@ -1,4 +1,5 @@
 require_relative '../context'
+require_relative '../query/query'
 require_relative '../header/secure_header'
 require_relative '../auth/master_token'
 require_relative '../auth/resource_token'
