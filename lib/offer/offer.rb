@@ -1,6 +1,7 @@
 require 'json'
 require_relative '../context'
 require_relative '../header/secure_header'
+require_relative '../query/query'
 
 module Azure
   module DocumentDB
@@ -27,6 +28,10 @@ module Azure
         url = url offer_id
         header = secure_header.header "put", offer_id
         JSON.parse(rest_client.put url, new_offer, header)
+      end
+
+      def query
+        Azure::DocumentDB::Query.new context, rest_client, resource_type, '', url
       end
 
       def uri

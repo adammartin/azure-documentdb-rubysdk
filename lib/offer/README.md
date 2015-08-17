@@ -38,6 +38,15 @@ Offer provides the functionality described in the [MSDN DocumentDB Database REST
 => {"offerType"=>"S1", "resource"=>"dbs/1BZ1AA==/colls/1BZ1AMBZFwA=/", "offerResourceId"=>"1BZ1AMBZFwA=", "id"=>"qKcE", "_rid"=>"qKcE", "_ts"=>1430919012, "_self"=>"offers/qKcE/", "_etag"=>""00000200-0000-0000-0000-554a17640000""}
 ```
 
+## Create a Query Object
+
+You can create a query for offers using the Database Object.  See Azure::DocumentDB::Query README.md fo rexplination of usage.
+
+```
+query = offer.query
+=> #<Azure::DocumentDB::Query:0x007fa7cd32ed18 @context=#<Azure::DocumentDB::Context:0x007fa7ca6f2790 @endpoint="https://had-test.documents.azure.com:443", @master_token=#<Azure::DocumentDB::MasterToken:0x007fa7ca6f2740 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, service_version"2015-04-08", rest_clientRestClient, resource_type"offers", secure_header#<Azure::DocumentDB::SecureHeader:0x007fa7cd32ecf0 @token=#<Azure::DocumentDB::MasterToken:0x007fa7ca6f2740 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, resource_type"offers", parent_resource_id"", url"https://had-test.documents.azure.com:443/offers"
+```
+
 ## Get URI of the Offer resource
 ```
 > offer.uri
