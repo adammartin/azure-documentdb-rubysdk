@@ -6,6 +6,7 @@ require 'permission/permission'
 require 'permission/permission_definition'
 require 'permission/permission_mode'
 require 'auth/resource_token'
+require 'query/query'
 
 describe Azure::DocumentDB::Permission do
   let(:url) { "our_url" }
@@ -23,6 +24,7 @@ describe Azure::DocumentDB::Permission do
   let(:create_permission) { gimme(Azure::DocumentDB::PermissionDefinition) }
   let(:replace_permission) { gimme(Azure::DocumentDB::PermissionDefinition) }
   let(:resource_token) { gimme(Azure::DocumentDB::ResourceToken) }
+  let(:query) { gimme(Azure::DocumentDB::Query) }
   let(:perm_name) { "collection_name" }
   let(:perm_mode) { Azure::DocumentDB::Permissions::Mode.ALL }
   let(:perm_rid) { "perm_rid" }
@@ -53,6 +55,7 @@ describe Azure::DocumentDB::Permission do
     give(context).master_token { master_token }
     give(context).endpoint { url }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
+    give(Azure::DocumentDB::Query).new(context, rest_client, Azure::DocumentDB::ResourceType.PERMISSION, user_id, permission_list_url) { query }
     give(replace_permission).body { replace_body }
     give(create_permission).body { create_body }
     give(secure_header).header("get", user_id) { list_header }
@@ -90,6 +93,10 @@ describe Azure::DocumentDB::Permission do
   it "can delete an existing permission for a given user on a database" do
     permission.delete perm_rid
     verify(rest_client).delete permission_url, delete_header
+  end
+
+  it "can create a query object" do
+    expect(permission.query).to eq query
   end
 
   it "can get the uri of the permission resource" do

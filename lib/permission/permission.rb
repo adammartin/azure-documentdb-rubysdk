@@ -2,6 +2,7 @@ require 'json'
 require_relative '../context'
 require_relative '../auth/resource_token'
 require_relative '../header/secure_header'
+require_relative '../query/query'
 require_relative 'permission_mode'
 require_relative 'permission_definition'
 
@@ -48,6 +49,10 @@ module Azure
         url = url permission_rid
         header = secure_header.header "delete", permission_rid
         rest_client.delete url, header
+      end
+
+      def query
+        Azure::DocumentDB::Query.new context, rest_client, resource_type, user_id, url
       end
 
       def uri
