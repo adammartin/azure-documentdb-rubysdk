@@ -6,6 +6,7 @@ require 'auth/resource_token'
 require 'collection/collection'
 require 'collection/index_policy'
 require 'document/document'
+require 'query/query'
 
 describe Azure::DocumentDB::Collection do
   let(:url) { "our_url" }
@@ -20,6 +21,7 @@ describe Azure::DocumentDB::Collection do
   let(:master_token) { gimme(Azure::DocumentDB::MasterToken) }
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
   let(:document) { gimme(Azure::DocumentDB::Document) }
+  let(:query) { gimme(Azure::DocumentDB::Query) }
   let(:coll_name) { "some_name" }
   let(:coll_id) { "HN49AMgSAwA=" }
   let(:policy_body) { "policy_body" }
@@ -36,9 +38,14 @@ describe Azure::DocumentDB::Collection do
     give(context).master_token { master_token }
     give(context).endpoint { url }
     give(Azure::DocumentDB::SecureHeader).new(master_token, resource_type) { secure_header }
+    give(Azure::DocumentDB::Query).new(context, rest_client, Azure::DocumentDB::ResourceType.COLLECTION, database_id, full_coll_url) { query }
     give(secure_header).header("get", database_id) { list_header }
     give(rest_client).get(full_coll_url, list_header) { list_result.to_json }
   }
+
+  it "can create a query for the collection" do
+    expect(collection.query).to eq query
+  end
 
   context "When using a master token," do
     let(:create_header) { "create_header" }

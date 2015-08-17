@@ -106,6 +106,14 @@ You can create an Azure::DocumentDB::Document object from the Collection object 
 => #<Azure::DocumentDB::Document:0x007feb0a4e4f10 @context=#<Azure::DocumentDB::Context:0x007feb0c35e978 @endpoint="https://had-test.documents.azure.com:443", @master_token=#<Azure::DocumentDB::MasterToken:0x007feb0c35e950 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, service_version"2015-04-08", rest_clientRestClient, resource_type"docs", secure_header#<Azure::DocumentDB::SecureHeader:0x007feb0a4e4ec0 @token=#<Azure::DocumentDB::MasterToken:0x007feb0c35e950 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, resource_type"docs", database_id"1BZ1AA==", collection_id"1BZ1AMBZFwA=", resource_token#<Azure::DocumentDB::ResourceToken:0x007feb0c560190 @encoded_token="type%3Dresource%26ver%3D1%26sig%3DNIHStPXxgU82yKwnK8RG4A%3D%3D%3BNQ90Jwqp7Q6ejur2Sh4ZnpdB4eNRGgohQYo9zazSQgDtRieGX9e1E7VWvYSIPY9lpYtv8t2EwD1LYXGl5R1K6TBymbqwHrwwWBlH0HEDsEEHZ3mF6%2F1tSkrVh0UjR1sGuuYSyku0cadZm1XNWnM78Fz5AjSHg1LeRNrU%2FMVvW%2BsFZAPxin1SG2Z6lrr0saWTEp2dbU8vv0mLKLvZn61pkbXRWOJHej0fx%2FY1dKe0lIE%3D%3B">
 ```
 
+## Create a Query Object
+
+You can create a query for a colleciton using the Collection Object.  See Azure::DocumentDB::Query README.md for explination of usage
+
+```
+query = collection.query
+ => #<Azure::DocumentDB::Query:0x007fa7caf9efb0 @context=#<Azure::DocumentDB::Context:0x007fa7ca6f2790 @endpoint="https://had-test.documents.azure.com:443", @master_token=#<Azure::DocumentDB::MasterToken:0x007fa7ca6f2740 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, service_version"2015-04-08", rest_clientRestClient, resource_type"colls", secure_header#<Azure::DocumentDB::SecureHeader:0x007fa7caf9ef88 @token=#<Azure::DocumentDB::MasterToken:0x007fa7ca6f2740 @master_key="mLg+Dx8tSnnzozD5I2jotTr8FvkI6OSNBmCMwui8U83yxyZvJ2wMHQZjgnvvAfBW7HYJf3xlm/IRjAdRDcWfHw==">, resource_type"colls", parent_resource_id"1BZ1AA==", url"https://had-test.documents.azure.com:443/dbs/1BZ1AA==/colls"
+```
 
 ## Get the uri of the Collection
 ```

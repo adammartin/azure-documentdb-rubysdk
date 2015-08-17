@@ -40,6 +40,10 @@ module Azure
         rest_client.delete url, header
       end
 
+      def query
+        Azure::DocumentDB::Query.new context, rest_client, resource_type, database_id, url
+      end
+
       def uri
         url
       end
