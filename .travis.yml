@@ -9,5 +9,4 @@ deploy:
   gem: azure-documentdb-rubysdk
   on:
     tags: true
-    repo: adammartin/azure-documentdb-rubysdk
     gem: azure-documentdb-sdk
