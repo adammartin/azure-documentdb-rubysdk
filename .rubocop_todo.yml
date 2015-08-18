@@ -42,7 +42,7 @@ Style/EmptyLinesAroundAccessModifier:
 # Configuration parameters: AllowForAlignment.
 Style/ExtraSpacing:
   Exclude:
-    - 'azure-documentdb-rubysdk.gemspec'
+    - 'azure-documentdb-sdk.gemspec'
 #    - 'lib/database/database.rb'
 
 # Cop supports --auto-correct.
@@ -148,7 +148,7 @@ Style/SpaceInsideParens:
 # Cop supports --auto-correct.
 Style/SpecialGlobalVars:
   Exclude:
-    - 'azure-documentdb-rubysdk.gemspec'
+    - 'azure-documentdb-sdk.gemspec'
 
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
