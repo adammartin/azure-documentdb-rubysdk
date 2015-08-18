@@ -11,7 +11,7 @@ def no_methods_called_on_object a_test_double
 end
 
 SimpleCov.start do
-  add_filter "/spec/"
+  add_filter '/spec/'
 end
 
 module Gimme
@@ -31,6 +31,7 @@ module Gimme
     end
 
     private
+
     attr_writer :values
   end
 end

@@ -20,18 +20,18 @@ module Azure
       end
 
       def list
-        header = secure_header.header "get", user_id
+        header = secure_header.header 'get', user_id
         JSON.parse(rest_client.get url, header)
       end
 
       def create permission_definition
-        header = secure_header.header "post", user_id
+        header = secure_header.header 'post', user_id
         JSON.parse(rest_client.post url, permission_definition.body, header)
       end
 
       def get permission_rid
         url = url permission_rid
-        header = secure_header.header "get", permission_rid
+        header = secure_header.header 'get', permission_rid
         JSON.parse(rest_client.get url, header)
       end
 
@@ -41,13 +41,13 @@ module Azure
 
       def replace permission_rid, replace_permission
         url = url permission_rid
-        header = secure_header.header "put", permission_rid
+        header = secure_header.header 'put', permission_rid
         JSON.parse(rest_client.put url, replace_permission.body, header)
       end
 
       def delete permission_rid
         url = url permission_rid
-        header = secure_header.header "delete", permission_rid
+        header = secure_header.header 'delete', permission_rid
         rest_client.delete url, header
       end
 
@@ -60,10 +60,11 @@ module Azure
       end
 
       private
+
       attr_accessor :context, :rest_client, :resource_type, :parent_resource_type, :secure_header, :database_id, :user_id
 
       def url resource_id = nil
-        target = "/" + resource_id if resource_id
+        target = '/' + resource_id if resource_id
         "#{context.endpoint}/dbs/#{database_id}/#{parent_resource_type}/#{user_id}/#{resource_type}#{target}"
       end
     end

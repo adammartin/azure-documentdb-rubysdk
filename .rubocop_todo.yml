@@ -1,0 +1,182 @@
+# Cop supports --auto-correct.
+Lint/UnusedBlockArgument:
+  Exclude:
+#    - 'lib/header/header.rb'
+
+Lint/UselessAccessModifier:
+  Exclude:
+#    - 'lib/collection/index_path.rb'
+#    - 'lib/collection/index_policy.rb'
+#    - 'lib/context.rb'
+#    - 'lib/document/document.rb'
+    - 'lib/permission/permission_mode.rb'
+
+# Configuration parameters: AllowURI, URISchemes.
+Metrics/LineLength:
+  Max: 220
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles, ProceduralMethods, FunctionalMethods, IgnoredMethods.
+Style/BlockDelimiters:
+  Enabled: false
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/BracesAroundHashParameters:
+  Exclude:
+#    - 'spec/header/custom_query_header_spec.rb'
+#    - 'spec/offer/offer_spec.rb'
+
+Style/Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
+  Exclude:
+#    - 'lib/header/custom_query_header.rb'
+
+# Cop supports --auto-correct.
+Style/EmptyLinesAroundAccessModifier:
+  Enabled: true
+
+# Cop supports --auto-correct.
+# Configuration parameters: AllowForAlignment.
+Style/ExtraSpacing:
+  Exclude:
+    - 'azure-documentdb-rubysdk.gemspec'
+#    - 'lib/database/database.rb'
+
+# Cop supports --auto-correct.
+# Configuration parameters: SupportedStyles, UseHashRocketsWithSymbolValues.
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/IndentationConsistency:
+  Exclude:
+#    - 'Gemfile'
+
+# Cop supports --auto-correct.
+# Configuration parameters: Width.
+Style/IndentationWidth:
+  Exclude:
+#    - 'Gemfile'
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/MethodDefParentheses:
+  Enabled: false
+
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/MethodName:
+  Enabled: true
+
+# Cop supports --auto-correct.
+Style/NumericLiterals:
+  MinDigits: 11
+
+# Configuration parameters: NamePrefix, NamePrefixBlacklist.
+Style/PredicateName:
+  Exclude:
+#    - 'lib/document/document.rb'
+#    - 'lib/header/custom_query_header.rb'
+
+# Configuration parameters: SupportedStyles.
+Style/RaiseArgs:
+  EnforcedStyle: compact
+
+# Cop supports --auto-correct.
+Style/RedundantBegin:
+  Exclude:
+#    - 'lib/collection/collection.rb'
+#    - 'lib/database/database.rb'
+#    - 'lib/user/user.rb'
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/SignalException:
+  Exclude:
+#    - 'lib/collection/collection.rb'
+#    - 'lib/collection/index_path.rb'
+#    - 'lib/database/database.rb'
+#    - 'lib/document/document.rb'
+#    - 'lib/header/custom_query_header.rb'
+
+# Cop supports --auto-correct.
+Style/SpaceAfterComma:
+  Exclude:
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyleInsidePipes, SupportedStyles.
+Style/SpaceAroundBlockParameters:
+  Exclude:
+#    - 'lib/collection/collection.rb'
+#    - 'lib/database/database.rb'
+#    - 'lib/header/header.rb'
+#    - 'lib/user/user.rb'
+
+# Cop supports --auto-correct.
+# Configuration parameters: MultiSpaceAllowedForOperators.
+Style/SpaceAroundOperators:
+  AutoCorrect: true
+  Exclude:
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/SpaceBeforeBlockBraces:
+  AutoCorrect: true
+  Enabled: true
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.
+Style/SpaceInsideBlockBraces:
+  AutoCorrect: true
+  Enabled: true
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SupportedStyles.
+Style/SpaceInsideHashLiteralBraces:
+  AutoCorrect: true
+  Enabled: true
+
+# Cop supports --auto-correct.
+Style/SpaceInsideParens:
+  AutoCorrect: true
+  Exclude:
+#    - 'spec/header/custom_query_header_spec.rb'
+
+# Cop supports --auto-correct.
+Style/SpecialGlobalVars:
+  Exclude:
+    - 'azure-documentdb-rubysdk.gemspec'
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/StringLiterals:
+  AutoCorrect: true
+  Enabled: true
+
+# Cop supports --auto-correct.
+# Configuration parameters: IgnoredMethods.
+Style/SymbolProc:
+  Exclude:
+#    - 'lib/collection/index_policy.rb'
+
+# Cop supports --auto-correct.
+Style/Tab:
+  Exclude:
+#    - 'Gemfile'
+
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/TrailingBlankLines:
+  AutoCorrect: true
+  Exclude:
+#    - 'Gemfile'
+#    - 'azure-documentdb-rubysdk.gemspec'
+
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+Style/VariableName:
+  Enabled: true
+  Exclude:
+    - 'lib/permission/permission_mode.rb'

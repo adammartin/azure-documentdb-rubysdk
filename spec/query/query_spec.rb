@@ -17,9 +17,9 @@ describe Azure::DocumentDB::Query do
   let(:secure_header) { gimme(Azure::DocumentDB::SecureHeader) }
   let(:cq_header) { gimme(Azure::DocumentDB::CustomQueryHeader) }
   let(:response) { gimme }
-  let(:response_header) { { :stuff => "normal returned header stuff" } }
-  let(:response_body) { { "some_stuff" => "in json format" } }
-  let(:query_body) { { :query => "query", :parameters => "params" } }
+  let(:response_header) { { :stuff => 'normal returned header stuff' } }
+  let(:response_body) { { 'some_stuff' => 'in json format' } }
+  let(:query_body) { { :query => 'query', :parameters => 'params' } }
   let(:transformed_result) { { :header => response_header, :body => response_body } }
 
   let(:query) { Azure::DocumentDB::Query.new context, rest_client, resource_type, parent_resource_id, uri }
@@ -35,20 +35,20 @@ describe Azure::DocumentDB::Query do
     give(response).body { response_body.to_json }
   }
 
-  it "will return results of the query" do
+  it 'will return results of the query' do
     expect(query.execute query_request).to eq transformed_result
   end
 
-  context "when a continuation_token is returned" do
-    let(:transformed_result) { { :header => response_header, :body => response_body, :next_request=> query_request } }
+  context 'when a continuation_token is returned' do
+    let(:transformed_result) { { :header => response_header, :body => response_body, :next_request => query_request } }
     let(:continuation_token) { :token }
     let(:response_header) { { :x_ms_continuation => :continuation_token } }
 
-    it "adds the updated query request to the response for reuse" do
+    it 'adds the updated query request to the response for reuse' do
       expect(query.execute query_request).to eq transformed_result
     end
 
-    it "sets the continuation token on the query_request" do
+    it 'sets the continuation token on the query_request' do
       query.execute query_request
       verify(cq_header).continuation_token :continuation_token
     end

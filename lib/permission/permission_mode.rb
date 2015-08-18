@@ -7,8 +7,9 @@ module Azure
         end
 
         private
-        @ALL = "All".freeze
-        @READ = "Read".freeze
+
+        @ALL = 'All'.freeze
+        @READ = 'Read'.freeze
       end
     end
   end

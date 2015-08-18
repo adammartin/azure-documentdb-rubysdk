@@ -45,8 +45,8 @@ Clone the project.
 
 `bundle install`
 
-To execute tests:
+To execute tests and run static analysis via [rubocop](https://github.com/bbatsov/rubocop):
 
-`bundle exec rspec`
+`rake`
 
 Coverage can be found in the ./coverage directory

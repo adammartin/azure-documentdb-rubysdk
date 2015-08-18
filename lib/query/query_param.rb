@@ -14,6 +14,7 @@ module Azure
       end
 
       private
+
       attr_accessor :param_array
     end
   end

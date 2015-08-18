@@ -3,19 +3,22 @@ require_relative 'version/version'
 
 module Azure
   module DocumentDB
+    # rubocop:disable Style/VariableName, Lint/UselessAccessModifier
     class ResourceType
       class << self
         attr_reader :COLLECTION, :DOCUMENT, :DATABASE, :USER, :PERMISSION, :OFFER
       end
 
       private
-      @COLLECTION = "colls".freeze
-      @DOCUMENT = "docs".freeze
-      @DATABASE = "dbs".freeze
-      @USER = "users".freeze
-      @PERMISSION = "permissions".freeze
-      @OFFER = "offers".freeze
+
+      @COLLECTION = 'colls'.freeze
+      @DOCUMENT = 'docs'.freeze
+      @DATABASE = 'dbs'.freeze
+      @USER = 'users'.freeze
+      @PERMISSION = 'permissions'.freeze
+      @OFFER = 'offers'.freeze
     end
+    # rubocop:enable Style/VariableName, Lint/UselessAccessModifier
 
     class Context
       def initialize service_endpoint, master_key

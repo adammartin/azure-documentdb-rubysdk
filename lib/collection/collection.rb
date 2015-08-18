@@ -18,26 +18,26 @@ module Azure
       end
 
       def list resource_token = nil
-        header = header "get", database_id, resource_token
+        header = header 'get', database_id, resource_token
         JSON.parse(rest_client.get url, header)
       end
 
       def create collection_name, policy = nil
-        body = { "id" => collection_name }
-        body["IndexPolicy"] = policy.body if policy
-        header = header "post", database_id
+        body = { 'id' => collection_name }
+        body['IndexPolicy'] = policy.body if policy
+        header = header 'post', database_id
         JSON.parse(rest_client.post url, body.to_json, header)
       end
 
       def get collection_id, resource_token = nil
         url = url collection_id
-        header = header "get", collection_id, resource_token
+        header = header 'get', collection_id, resource_token
         JSON.parse(rest_client.get url, header)
       end
 
       def delete collection_id, resource_token = nil
         url = url collection_id
-        header = header "delete", collection_id, resource_token
+        header = header 'delete', collection_id, resource_token
         rest_client.delete url, header
       end
 
@@ -50,24 +50,23 @@ module Azure
       end
 
       def document_for_name collection_name, resource_token = nil
-        collection = (list["DocumentCollections"].select do | c | c["id"] == collection_name end)[0]
-        raise ArgumentError.new "Collection for supplied name must exist" unless collection
-        Azure::DocumentDB::Document.new context, rest_client, database_id, collection["_rid"], resource_token
+        collection = (list['DocumentCollections'].select do |c| c['id'] == collection_name end)[0]
+        fail ArgumentError.new 'Collection for supplied name must exist' unless collection
+        Azure::DocumentDB::Document.new context, rest_client, database_id, collection['_rid'], resource_token
       end
 
       def document_for_rid collection_rid, resource_token = nil
-        begin
-          Azure::DocumentDB::Document.new context, rest_client, database_id, collection_rid, resource_token if get collection_rid, resource_token
-        rescue
-          raise ArgumentError.new "Collection for supplied id must exist"
-        end
+        Azure::DocumentDB::Document.new context, rest_client, database_id, collection_rid, resource_token if get collection_rid, resource_token
+      rescue
+        raise ArgumentError.new 'Collection for supplied id must exist'
       end
 
       private
+
       attr_accessor :context, :rest_client, :resource_type, :secure_header, :database_id
 
       def url resource_id = nil
-        target = "/" + resource_id if resource_id
+        target = '/' + resource_id if resource_id
         "#{context.endpoint}/dbs/#{database_id}/#{resource_type}#{target}"
       end
 

@@ -22,6 +22,7 @@ module Azure
       end
 
       private
+
       attr_accessor :context, :rest_client, :resource_type, :secure_header, :parent_resource_id, :url
 
       def parse_results query_request, response

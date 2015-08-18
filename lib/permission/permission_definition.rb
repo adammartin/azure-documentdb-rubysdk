@@ -10,10 +10,11 @@ module Azure
       end
 
       def body
-        { "id" => perm_id, "permissionMode"=> perm_mode, "resource"=> resource}.to_json
+        { 'id' => perm_id, 'permissionMode' => perm_mode, 'resource' => resource }.to_json
       end
 
       private
+
       attr_accessor :perm_id, :perm_mode, :resource
     end
   end
