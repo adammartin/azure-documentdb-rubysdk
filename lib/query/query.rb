@@ -1,7 +1,7 @@
 require_relative 'query_param'
+require_relative 'query_request'
 require_relative '../context'
 require_relative '../header/secure_header'
-require_relative '../header/custom_query_header'
 require_relative '../auth/master_token'
 
 module Azure
@@ -16,16 +16,25 @@ module Azure
         self.url = uri
       end
 
-      def execute query, custom_query_header, query_params
-        raw_header = secure_header.header "post", parent_resource_id
-        header = custom_query_header.header raw_header
-        request = { :query => query, :parameters => query_params.params }
-        response = rest_client.post(url, request.to_json, header)
-        { :header => response.headers, :body => JSON.parse(response.body) }
+      def execute query_request
+        header = query_request.header secure_header, parent_resource_id
+        parse_results query_request, rest_client.post(url, query_request.body.to_json, header)
       end
 
       private
       attr_accessor :context, :rest_client, :resource_type, :secure_header, :parent_resource_id, :url
+
+      def parse_results query_request, response
+        result = { :header => response.headers, :body => JSON.parse(response.body) }
+        update_result_with_next_request query_request, response, result
+      end
+
+      def update_result_with_next_request query_request, response, result
+        return result unless response.headers[:x_ms_continuation]
+        query_request.custom_query_header.continuation_token response.headers[:x_ms_continuation]
+        result[:next_request] = query_request
+        result
+      end
     end
   end
 end

@@ -1,6 +1,6 @@
 # Azure DocumentDB Ruby SDK
 
-Lacking an official ruby SDK I'm going to start building one from my use case perspective.  Please help contribute and grow this project.  This project is in BETA state.  Next round of changes I plan on making use of the Query object easier.
+Lacking an official ruby SDK I'm going to start building one from my use case perspective.  Please help contribute and grow this project.
 
 # Usage
 
