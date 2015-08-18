@@ -6,8 +6,6 @@ deploy:
   provider: rubygems
   api_key:
     secure: Lyz2M6PLY77/ZNJ9ygs1/k/udZh8z2We2d914kkIPf1ZRSCkBQgTklYYHNzAcE5oNwaUXFs2yPInba+cE73lZT78QM6zbw8P+COlR7t61HETSOPB5kcDwwvz09FF7IR1hMt4wBeYrmx7XJ7asvKIZKCime2umNpMojxTcOHf/Pj/qPyJkBOsBw9iQFCeBfbkT2HXjC1/eQMLYwNPFwKw3K5LWwWhr9X7u3ggfGQJTEftBkwNdoqezw+9+L1vRjFlNU5qI9NB0O1zF/fsM3w/3t1zcKPFzZVm39btwuHPsONTnfJJvsGTVeJMvCM3LjiostkGOVZZKJf/cwDjaIDB+cg8uKhOKY/uhLhyyzH6HvQKF8kmmf4c4epVkGiClqFqrywkBjP6slYV39AE+VrQAwPsU+Drh6/Abj9HrSddoElBBFIBZ627Mt6wTGcybWMn0K0OtZVcEhgShV9O+3BYsvQXS1XmkvFP9LoLx3bEJWCEmq9Wb7PfvgzYFPTXDgM689U+wYgP4q/XXzIx8noLokjI8Crmw6j6kMuDuIv419uI8QEoIepS1STTDiC3BAy1tDn4rR0L/wgrJK0Wmhyt0Q3R+zQL8xJjO2hBEQayOjWs9xm+Uf6qAQwnWoSYPPhQQeiu+Did1nlUtQGsKuUmfCqjFUPEe9q1AqJjGF8joYU=
-  gem: azure-documentdb-rubysdk
+  gem: azure-documentdb-sdk
   on:
     tags: true
-    repo: adammartin/azure-documentdb-rubysdk
-    gem: azure-documentdb-sdk
