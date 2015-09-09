@@ -1,4 +1,6 @@
 # Azure DocumentDB Ruby SDK
+[![Build Status](https://travis-ci.org/adammartin/azure-documentdb-rubysdk.svg?branch=v0.2.1)](https://travis-ci.org/adammartin/azure-documentdb-rubysdk)
+[![Code Climate](https://codeclimate.com/github/adammartin/azure-documentdb-rubysdk/badges/gpa.svg)](https://codeclimate.com/github/adammartin/azure-documentdb-rubysdk)
 
 Lacking an official ruby SDK I'm going to start building one from my use case perspective.  Please help contribute and grow this project.
 
