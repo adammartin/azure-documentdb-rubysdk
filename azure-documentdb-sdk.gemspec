@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.authors       = ['Adam Martin']
   s.email         = 'ebondark.od@gmail.com'
   s.require_paths = 'lib'
-  s.add_runtime_dependency 'rest-client', '~>1.8', '>=1.8.0'
+  s.add_runtime_dependency 'rest-client', '>= 1.8.0', '< 3'
   s.files         = Dir.glob('lib/**/*') + %w(LICENSE README.md)
   s.homepage      =
     'https://github.com/adammartin/azure-documentdb-rubysdk'
