@@ -68,6 +68,3 @@ DEPENDENCIES
   rspec-mocks
   rubocop
   simplecov
-
-BUNDLED WITH
-   1.16.1
