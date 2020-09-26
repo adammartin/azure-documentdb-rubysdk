@@ -1,0 +1,11 @@
+version: '3'
+services:
+  rubysdk:
+    container_name: rubysdk
+    build: .
+    command: bash -c "while [ true ]; do sleep 10; done"
+    volumes:
+      - .:/azure-documentdb-rubysdk
+    environment:
+      - AZURE_COSMOS_ACCOUNT_URI=https://my-db.documents.azure.com:443/
+      - AZURE_COSMOS_ACCOUNT_KEY=my_key_from_azure_cosmos_db
