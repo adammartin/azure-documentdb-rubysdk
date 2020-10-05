@@ -52,3 +52,21 @@ To execute tests and run static analysis via [rubocop](https://github.com/bbatso
 `rake`
 
 Coverage can be found in the ./coverage directory
+
+# Docker for development
+
+Build docker.
+
+`docker-compose up -d --build`
+
+Bash in your docker.
+
+`docker exec -it rubysdk bash`
+
+Build your gem version.
+
+`gem build azure-documentdb-sdk.gemspec`
+
+Install your gem version.
+
+`gem install azure-documentdb-sdk-x.x.x.gem`

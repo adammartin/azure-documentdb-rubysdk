@@ -8,5 +8,5 @@ group :development do
   gem 'gimme'
   gem 'simplecov', :require => false
   gem 'rake'
-  gem 'rubocop'
+  gem 'rubocop', '~> 0.33.0', require: false
 end
